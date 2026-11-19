@@ -24,9 +24,12 @@ import { Settings } from '$app/components/layouts/Settings';
 import { BankAccountsPlanAlert } from '../common/components/BankAccountsPlanAlert';
 import { ConnectAccounts } from '../common/components/ConnectAccounts';
 import { useBankAccountColumns } from '../common/hooks/useBankAccountColumns';
+import { useBankConnectResult } from '../common/hooks/useBankConnectResult';
 
 export function BankAccounts() {
   useTitle('bank_accounts');
+
+  useBankConnectResult();
 
   const [t] = useTranslation();
 

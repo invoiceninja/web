@@ -10,8 +10,6 @@
 
 import { useTranslation } from 'react-i18next';
 import { MdWarning } from 'react-icons/md';
-import { endpoint } from '$app/common/helpers';
-import { request } from '$app/common/helpers/request';
 import { route } from '$app/common/helpers/route';
 import { useFormatMoney } from '$app/common/hooks/money/useFormatMoney';
 import { useCurrentCompany } from '$app/common/hooks/useCurrentCompany';
@@ -20,11 +18,13 @@ import { BankAccount } from '$app/common/interfaces/bank-accounts';
 import { DataTableColumns } from '$app/components/DataTable';
 import { Link } from '$app/components/forms';
 import { Tooltip } from '$app/components/Tooltip';
+import { IntegrationType, useConnectBankProvider } from './useBankProviders';
 
-enum IntegrationType {
-  Yodlee = 'YODLEE',
-  Nordigen = 'NORDIGEN',
-}
+const RECONNECTABLE_INTEGRATION_TYPES: string[] = [
+  IntegrationType.Yodlee,
+  IntegrationType.Nordigen,
+  IntegrationType.EnableBanking,
+];
 
 export const useBankAccountColumns = () => {
   const { t } = useTranslation();
@@ -33,31 +33,25 @@ export const useBankAccountColumns = () => {
   const formatMoney = useFormatMoney();
   const resolveCurrency = useResolveCurrency({ resolveBy: 'code' });
 
-  const handleConnectNordigen = (institutionId: string) => {
-    request('POST', endpoint('/api/v1/one_time_token'), {
-      context: 'nordigen',
-      platform: 'react',
-      institution_id: institutionId,
-    }).then((tokenResponse) => {
-      window.open(
-        endpoint('/nordigen/connect/:hash', {
-          hash: tokenResponse?.data?.hash,
-        })
-      );
-    });
-  };
+  const connect = useConnectBankProvider();
 
-  const handleConnectYodlee = () => {
-    request('POST', endpoint('/api/v1/one_time_token'), {
-      context: 'yodlee',
-      platform: 'react',
-    }).then((tokenResponse) => {
-      window.open(
-        route('https://invoicing.co/yodlee/onboard/:hash', {
-          hash: tokenResponse?.data?.hash,
-        })
-      );
-    });
+  const handleReconnect = (bankAccount: BankAccount) => {
+    switch (bankAccount.integration_type) {
+      case IntegrationType.Nordigen:
+        connect('nordigen', {
+          institution_id: bankAccount.nordigen_institution_id,
+        });
+        break;
+
+      case IntegrationType.EnableBanking:
+        // The bank (ASPSP) is selected again server-side.
+        connect('enablebanking');
+        break;
+
+      case IntegrationType.Yodlee:
+        connect('yodlee');
+        break;
+    }
   };
 
   const columns: DataTableColumns<BankAccount> = [
@@ -74,8 +68,9 @@ export const useBankAccountColumns = () => {
             {bankAccount?.bank_account_name}
           </Link>
 
-          {(bankAccount.integration_type === IntegrationType.Nordigen ||
-            bankAccount.integration_type === IntegrationType.Yodlee) &&
+          {RECONNECTABLE_INTEGRATION_TYPES.includes(
+            bankAccount.integration_type
+          ) &&
             bankAccount.disabled_upstream && (
               <Tooltip
                 message={t('reconnect') as string}
@@ -87,19 +82,7 @@ export const useBankAccountColumns = () => {
                   onClick={(event) => {
                     event.stopPropagation();
 
-                    if (
-                      bankAccount.integration_type === IntegrationType.Nordigen
-                    ) {
-                      handleConnectNordigen(
-                        bankAccount.nordigen_institution_id
-                      );
-                    }
-
-                    if (
-                      bankAccount.integration_type === IntegrationType.Yodlee
-                    ) {
-                      handleConnectYodlee();
-                    }
+                    handleReconnect(bankAccount);
                   }}
                 >
                   <MdWarning color="red" size={22} />
