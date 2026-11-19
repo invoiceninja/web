@@ -108,6 +108,7 @@ import { isQuoteCancellable } from './helpers';
 import { useApprove } from './hooks/useApprove';
 import { useBulkAction } from './hooks/useBulkAction';
 import { useMarkSent } from './hooks/useMarkSent';
+import { useColorScheme } from '$app/common/colors';
 
 export type ChangeHandler = <T extends keyof Quote>(
   property: T,
@@ -813,6 +814,7 @@ export function useAllQuoteColumns() {
 }
 
 export function useQuoteColumns() {
+  const colors = useColorScheme();
   const invoicePaths = useInvoiceEditorPaths();
   const { t } = useTranslation();
   const { dateFormat } = useCurrentCompanyDateFormats();
@@ -1128,7 +1130,7 @@ export function useQuoteColumns() {
             <div className="w-full max-h-48 overflow-auto whitespace-normal break-all">
               <article
                 className={classNames('prose prose-sm', {
-                  'prose-invert': !reactSettings?.dark_mode,
+                  'prose-invert': colors.$0 === 'light',
                 })}
                 dangerouslySetInnerHTML={{
                   __html: sanitizeHTML(value as string),
@@ -1154,7 +1156,7 @@ export function useQuoteColumns() {
             <div className="w-full max-h-48 overflow-auto whitespace-normal break-all">
               <article
                 className={classNames('prose prose-sm', {
-                  'prose-invert': !reactSettings?.dark_mode,
+                  'prose-invert': colors.$0 === 'light',
                 })}
                 dangerouslySetInnerHTML={{
                   __html: sanitizeHTML(value as string),

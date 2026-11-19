@@ -192,8 +192,8 @@ export function ClientSelector(props: Props) {
 
           <div
             className={classNames('divide-y divide-dashed', {
-              'divide-[#09090B1A]': !reactSettings.dark_mode,
-              'divide-[#1f2e41]': reactSettings.dark_mode,
+              'divide-[#09090B1A]': colors.$0 === 'light',
+              'divide-[#2E2E34]': colors.$0 === 'dark',
             })}
           >
             {client.contacts

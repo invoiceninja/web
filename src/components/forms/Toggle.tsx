@@ -73,8 +73,9 @@ export default function Toggle(props: Props) {
           aria-hidden="true"
           className={classNames(
             checked ? 'translate-x-5' : 'translate-x-0',
-            'pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow ring-0 transition ease-in-out duration-200'
+            'pointer-events-none inline-block h-5 w-5 rounded-full shadow ring-0 transition ease-in-out duration-200'
           )}
+          style={{ backgroundColor: checked ? colors.$1 : colors.$9 }}
         />
       </StyledSwitch>
       {props.label && (

@@ -68,18 +68,18 @@ export function DesktopSidebar(props: Props) {
     >
       <div
         className="flex flex-col flex-grow overflow-y-auto border-r px-3"
-        style={{ backgroundColor: colors.$14, borderColor: colors.$4 }}
+        style={{ backgroundColor: colors.$14, borderColor: colors.$24 }}
       >
         <div
           className={classNames(
-            'flex items-center flex-shrink-0 h-16 border-b',
+            'flex items-center flex-shrink-0 h-16 border-b -mx-3 px-3',
             {
               'py-3': !isMiniSidebar,
               'justify-center': isMiniSidebar,
             }
           )}
           style={{
-            borderColor: 'white',
+            borderColor: colors.$26,
             color: colors.$3,
           }}
         >

@@ -98,7 +98,15 @@ export function Modal(props: Props) {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+            <Dialog.Overlay
+              className={classNames(
+                'fixed inset-0 transition-opacity',
+                {
+                  'bg-gray-500 bg-opacity-75': colors.$0 === 'light',
+                  'bg-black bg-opacity-70': colors.$0 === 'dark',
+                }
+              )}
+            />
           </Transition.Child>
 
           {/* This element is to trick the browser into centering the modal contents. */}

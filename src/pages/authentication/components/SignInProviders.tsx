@@ -18,6 +18,7 @@ import { AxiosResponse } from 'axios';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { v4 } from 'uuid';
+import { useColorScheme } from '$app/common/colors';
 import { AuthenticationTypes } from '$app/common/dtos/authentication';
 import { endpoint } from '$app/common/helpers';
 import { clearTabCompany } from '$app/common/helpers/company-session';
@@ -57,11 +58,18 @@ interface SignInProviderButtonProps {
 }
 
 export function SignInProviderButton(props: SignInProviderButtonProps) {
+  const colors = useColorScheme();
+
   return (
     <button
       disabled={props.disabled}
       onClick={props.onClick}
-      className="w-full h-10 rounded px-4 bg-white border border-gray-200 flex justify-center items-center space-x-2 text-center hover:bg-gray-50 cursor-pointer text-sm disabled:cursor-not-allowed"
+      className="w-full h-10 rounded px-4 border flex justify-center items-center space-x-2 text-center cursor-pointer text-sm disabled:cursor-not-allowed"
+      style={{
+        backgroundColor: colors.$1,
+        borderColor: colors.$24,
+        color: colors.$3,
+      }}
     >
       {props.children}
     </button>

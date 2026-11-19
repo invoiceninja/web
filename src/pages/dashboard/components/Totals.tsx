@@ -9,7 +9,7 @@
  */
 
 import { useQuery } from '@tanstack/react-query';
-import { ConfigProvider } from 'antd';
+import { ConfigProvider, theme as antdTheme } from 'antd';
 import collect from 'collect.js';
 import dayjs from 'dayjs';
 import { useAtomValue } from 'jotai';
@@ -480,7 +480,15 @@ export function Totals() {
                     {t('custom_range')}
                   </span>
 
-                  <ConfigProvider locale={antdLocale ?? undefined}>
+                  <ConfigProvider
+                    locale={antdLocale ?? undefined}
+                    theme={{
+                      algorithm:
+                        colors.$0 === 'dark'
+                          ? antdTheme.darkAlgorithm
+                          : antdTheme.defaultAlgorithm,
+                    }}
+                  >
                     <StyledRangePicker
                       size="large"
                       className="rounded-md"
@@ -491,7 +499,7 @@ export function Totals() {
                       ]}
                       format={dateFormat}
                       onChange={handlePreferencesCustomRangeChange}
-                      separator={<span style={{ color: colors.$4 }}>—</span>}
+                      separator={<span style={{ color: colors.$17 }}>—</span>}
                       allowClear={false}
                     />
                   </ConfigProvider>

@@ -131,6 +131,21 @@ export function Preferences() {
       </Element>
 
       <Element
+        leftSide={t('follow_device_theme')}
+        leftSideHelp={t('follow_device_theme_help')}
+      >
+        <Toggle
+          checked={Boolean(reactSettings?.follow_device_theme)}
+          onChange={(value) =>
+            handleChange(
+              'company_user.react_settings.follow_device_theme',
+              value
+            )
+          }
+        />
+      </Element>
+
+      <Element
         leftSide={t('show_table_footer')}
         leftSideHelp={t('show_table_footer_help')}
       >

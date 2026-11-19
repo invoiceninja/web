@@ -421,10 +421,10 @@ export function Combobox<T = any>({
             'relative w-full cursor-default overflow-hidden rounded-md border text-left sm:text-sm',
             {
               'shadow-sm': withShadow,
-              'border-[#09090B26]': !reactSettings.dark_mode && !isOpen,
-              'border-black': !reactSettings.dark_mode && isOpen,
-              'border-[#1f2e41]': reactSettings.dark_mode && !isOpen,
-              'border-white': reactSettings.dark_mode && isOpen,
+              'border-[#09090B26]': colors.$0 === 'light' && !isOpen,
+              'border-black': colors.$0 === 'light' && isOpen,
+              'border-[#2E2E34]': colors.$0 === 'dark' && !isOpen,
+              'border-white': colors.$0 === 'dark' && isOpen,
             }
           )}
         >
@@ -745,10 +745,10 @@ export function ComboboxStatic<T = any>({
               'relative w-full cursor-default overflow-hidden rounded-md border text-left sm:text-sm',
               {
                 'shadow-sm': withShadow,
-                'border-[#09090B26]': !reactSettings.dark_mode && !isOpen,
-                'border-black': !reactSettings.dark_mode && isOpen,
-                'border-[#1f2e41]': reactSettings.dark_mode && !isOpen,
-                'border-white': reactSettings.dark_mode && isOpen,
+                'border-[#09090B26]': colors.$0 === 'light' && !isOpen,
+                'border-black': colors.$0 === 'light' && isOpen,
+                'border-[#2E2E34]': colors.$0 === 'dark' && !isOpen,
+                'border-white': colors.$0 === 'dark' && isOpen,
               }
             )}
           >

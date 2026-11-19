@@ -568,7 +568,12 @@ export function PaymentMethodForm({
 
       <div className="flex justify-end gap-2 mt-2">
         <button
-          className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-4 py-2 text-sm font-medium border rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
+          style={{
+            backgroundColor: colors.$1,
+            borderColor: colors.$24,
+            color: colors.$3,
+          }}
           onClick={onCancel}
           disabled={isSubmitting}
         >

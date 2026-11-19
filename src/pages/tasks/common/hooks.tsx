@@ -87,6 +87,7 @@ import { shouldShowStartTaskButton } from './helpers/task';
 import { useInvoiceTask } from './hooks/useInvoiceTask';
 import { useStart } from './hooks/useStart';
 import { useStop } from './hooks/useStop';
+import { useColorScheme } from '$app/common/colors';
 
 export const defaultColumns: string[] = [
   'status',
@@ -140,6 +141,7 @@ export function useAllTaskColumns() {
 }
 
 export function useTaskColumns() {
+  const colors = useColorScheme();
   const invoicePaths = useInvoiceEditorPaths();
   const { t } = useTranslation();
   const { dateFormat } = useCurrentCompanyDateFormats();
@@ -260,7 +262,7 @@ export function useTaskColumns() {
             <div className="w-full max-h-48 overflow-auto whitespace-normal break-all">
               <article
                 className={classNames('prose prose-sm', {
-                  'prose-invert': !reactSettings?.dark_mode,
+                  'prose-invert': colors.$0 === 'light',
                 })}
                 dangerouslySetInnerHTML={{
                   __html: sanitizeHTML(value as string),

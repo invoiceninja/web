@@ -19,7 +19,7 @@ import { useCurrentCompany } from '$app/common/hooks/useCurrentCompany';
 import { useResolveLanguage } from '$app/common/hooks/useResolveLanguage';
 import { Account } from '$app/common/interfaces/account';
 import { isPasswordRequiredAtom } from './common/atoms/password-confirmation';
-import { darkColorScheme, lightColorScheme } from './common/colors';
+import { systemPrefersDarkAtom, useColorScheme } from './common/colors';
 import { toast } from './common/helpers/toast/toast';
 import {
   useAdmin,
@@ -75,6 +75,8 @@ export function App() {
 
   const dispatch = useDispatch();
   const darkMode = useSelector((state: RootState) => state.settings.darkMode);
+  const colors = useColorScheme();
+  const setSystemPrefersDark = useSetAtom(systemPrefersDarkAtom);
 
   const navigate = useNavigate();
 
@@ -141,14 +143,31 @@ export function App() {
   };
 
   useEffect(() => {
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const sync = () => setSystemPrefersDark(media.matches);
+
+    sync();
+    media.addEventListener('change', sync);
+
+    return () => media.removeEventListener('change', sync);
+  }, [setSystemPrefersDark]);
+
+  useEffect(() => {
     if (reactSettings) {
-      const colorScheme = reactSettings.dark_mode
-        ? darkColorScheme
-        : lightColorScheme;
+      const colorScheme = colors;
       document.body.style.backgroundColor = colorScheme.$23;
       document.body.style.colorScheme = colorScheme.$0;
+
+      // Portaled antd popups inherit these from <body>, not from their trigger.
+      document.body.style.setProperty('--accent-color', colorScheme.$3);
+      document.body.style.setProperty('--active-state-bg', colorScheme.$4);
+      document.body.style.setProperty('--calendar-bg', colorScheme.$2);
+      document.body.style.setProperty('--input-text-color', colorScheme.$3);
+      document.body.style.setProperty('--picker-border-color', colorScheme.$5);
+      document.body.style.setProperty('--picker-bg', colorScheme.$1);
     }
-  }, [reactSettings]);
+  }, [reactSettings, colors]);
 
   useEffect(() => {
     if (resolvedLanguage?.locale) {
@@ -278,7 +297,16 @@ export function App() {
   return (
     <>
       <div className="App">
-        <Toaster position="top-center" />
+        <Toaster
+          position="top-center"
+          toastOptions={{
+            style: {
+              backgroundColor: colors.$1,
+              color: colors.$3,
+              border: `1px solid ${colors.$24}`,
+            },
+          }}
+        />
         {routes}
       </div>
 

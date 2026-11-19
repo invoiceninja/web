@@ -66,5 +66,6 @@ export const MemoizedTr = memo(
   Tr,
   (prev, next) =>
     isEqual(prev.resource, next.resource) &&
-    isEqual(prev.memoValue, next.memoValue)
+    isEqual(prev.memoValue, next.memoValue) &&
+    isEqual(prev.style, next.style)
 );

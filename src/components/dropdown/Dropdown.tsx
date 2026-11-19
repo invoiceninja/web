@@ -30,6 +30,7 @@ import { DropdownElement } from './DropdownElement';
 interface Props extends CommonProps {
   label?: string | null;
   cardActions?: boolean;
+  variant?: 'secondary';
   cypressRef?: string;
   /** When set, applied to the trigger control as data-cy (defaults to chevronDownButton). */
   triggerCypressRef?: string;
@@ -43,6 +44,10 @@ const LabelButton = styled.button`
   color: ${(props) => props.theme.color} !important;
   background-color: ${(props) => props.theme.backgroundColor} !important;
   border-color: ${(props) => props.theme.borderColor} !important;
+
+  &:hover {
+    background-color: ${(props) => props.theme.hoverColor} !important;
+  }
 `;
 
 const DropdownElements = styled.div`
@@ -111,6 +116,8 @@ export function Dropdown(props: Props) {
 
   const colors = useColorScheme();
   const accentColor = useAccentColor();
+
+  const isSecondary = props.variant === 'secondary';
 
   const [children, setChildren] = useState<ReactNode[]>();
 
@@ -186,9 +193,10 @@ export function Dropdown(props: Props) {
         ) : (
           <LabelButton
             theme={{
-              backgroundColor: colors.$18,
-              color: colors.$1,
+              backgroundColor: isSecondary ? colors.$1 : colors.$18,
+              color: isSecondary ? colors.$3 : colors.$1,
               borderColor: props.labelButtonBorderColor || colors.$24,
+              hoverColor: isSecondary ? colors.$25 : colors.$18,
             }}
             type="button"
             disabled={props.disabled}
@@ -196,7 +204,6 @@ export function Dropdown(props: Props) {
             className={classNames(
               `border inline-flex items-center space-x-2 px-4 justify-center rounded-md text-sm disabled:cursor-not-allowed disabled:opacity-75 py-2 ${props.className}`,
               {
-                'hover:bg-white hover:border-gray-300': !props.cardActions,
                 'hover:opacity-90': props.cardActions,
               }
             )}

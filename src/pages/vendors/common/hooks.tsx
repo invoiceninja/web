@@ -33,6 +33,7 @@ import { EntityStatus } from '$app/components/EntityStatus';
 import { Tooltip } from '$app/components/Tooltip';
 import { TagPills } from '$app/components/tags/TagPills';
 import { DataTableColumnsExtended } from '$app/pages/invoices/common/hooks/useInvoiceColumns';
+import { useColorScheme } from '$app/common/colors';
 
 export const defaultColumns: string[] = [
   'number',
@@ -84,6 +85,7 @@ export function useAllVendorColumns() {
 }
 
 export function useVendorColumns() {
+  const colors = useColorScheme();
   const { t } = useTranslation();
   const { dateFormat } = useCurrentCompanyDateFormats();
 
@@ -264,7 +266,7 @@ export function useVendorColumns() {
             <div className="w-full max-h-48 overflow-auto whitespace-normal break-all">
               <article
                 className={classNames('prose prose-sm', {
-                  'prose-invert': !reactSettings?.dark_mode,
+                  'prose-invert': colors.$0 === 'light',
                 })}
                 dangerouslySetInnerHTML={{
                   __html: sanitizeHTML(value as string),

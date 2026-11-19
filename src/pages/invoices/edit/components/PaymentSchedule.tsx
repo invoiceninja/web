@@ -516,7 +516,7 @@ function PaymentSchedule() {
           {scheduleErrors && (
             <div
               className="p-4 rounded-md"
-              style={{ backgroundColor: colors.$18, color: colors.$4 }}
+              style={{ backgroundColor: colors.$18, color: colors.$1 }}
             >
               {Object.values(scheduleErrors.errors).flat().join(', ')}
             </div>
@@ -657,7 +657,7 @@ function PaymentSchedule() {
             {scheduleErrors?.errors['parameters.first_payment_date'] && (
               <div
                 className="mt-2 p-2 rounded-md text-sm"
-                style={{ backgroundColor: colors.$18, color: colors.$4 }}
+                style={{ backgroundColor: colors.$18, color: colors.$1 }}
               >
                 {scheduleErrors.errors['parameters.first_payment_date'].map(
                   (error, index) => (
@@ -672,7 +672,7 @@ function PaymentSchedule() {
               Object.keys(scheduleErrors.errors).length > 0 && (
                 <div
                   className="mb-4 p-4 rounded-md"
-                  style={{ backgroundColor: colors.$18, color: colors.$4 }}
+                  style={{ backgroundColor: colors.$18, color: colors.$1 }}
                 >
                   {Object.values(scheduleErrors.errors).flat().join(', ')}
                 </div>

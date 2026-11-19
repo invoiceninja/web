@@ -242,7 +242,7 @@ export function MultiEmailInput({
                 aria-label={`${String(t('remove'))} ${email}`}
                 data-cy="removeEmailBadge"
                 $hoverBackgroundColor={
-                  reactSettings.dark_mode ? colors.$5 : colors.$24
+                  colors.$0 === 'dark' ? colors.$5 : colors.$24
                 }
               >
                 <XMark size="0.55rem" color={colors.$3} />
@@ -251,8 +251,8 @@ export function MultiEmailInput({
           </span>
         )}
         $backgroundColor={colors.$1}
-        $borderColor={reactSettings.dark_mode ? '#1f2e41' : '#09090B26'}
-        $focusBorderColor={reactSettings.dark_mode ? '#ffffff' : '#000000'}
+        $borderColor={colors.$0 === 'dark' ? '#2E2E34' : '#09090B26'}
+        $focusBorderColor={colors.$0 === 'dark' ? '#ffffff' : '#000000'}
         $placeholderColor={colors.$17}
         $textColor={colors.$3}
       />

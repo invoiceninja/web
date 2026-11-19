@@ -161,8 +161,8 @@ function Verification({ visible, onClose }: VerificationProps) {
         <div className="flex flex-col mb-1">
           <PhoneInput
             className={classNames('phone-input-field', {
-              'phone-input-field-dark': reactSettings?.dark_mode,
-              'phone-input-field-light': !reactSettings?.dark_mode,
+              'phone-input-field-dark': colors.$0 === 'dark',
+              'phone-input-field-light': colors.$0 === 'light',
             })}
             international
             placeholder={t('phone')}

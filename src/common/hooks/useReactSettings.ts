@@ -107,6 +107,7 @@ export interface ReactSettings {
   table_footer_columns?: Record<ReactTableColumns, string[]>;
   show_table_footer?: boolean;
   dark_mode?: boolean;
+  follow_device_theme?: boolean;
   color_theme?: ColorTheme;
   client_show_cards?: ClientShowCard[];
   dashboard_fields?: string[];

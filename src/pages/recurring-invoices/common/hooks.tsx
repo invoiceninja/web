@@ -91,6 +91,7 @@ import { normalizeColumnName } from '$app/common/helpers/data-table';
 import { SendNowAction } from './components/SendNowAction';
 import { TagPills } from '$app/components/tags/TagPills';
 import { calculateNetAmount } from '$app/common/helpers/invoices/net-amount';
+import { useColorScheme } from '$app/common/colors';
 
 interface RecurringInvoiceUtilitiesProps {
   client?: Client;
@@ -650,6 +651,7 @@ export function useAllRecurringInvoiceColumns() {
 }
 
 export function useRecurringInvoiceColumns() {
+  const colors = useColorScheme();
   const { t } = useTranslation();
 
   const { dateFormat } = useCurrentCompanyDateFormats();
@@ -882,7 +884,7 @@ export function useRecurringInvoiceColumns() {
             <div className="w-full max-h-48 overflow-auto whitespace-normal break-all">
               <article
                 className={classNames('prose prose-sm', {
-                  'prose-invert': !reactSettings?.dark_mode,
+                  'prose-invert': colors.$0 === 'light',
                 })}
                 dangerouslySetInnerHTML={{
                   __html: sanitizeHTML(value as string),
@@ -908,7 +910,7 @@ export function useRecurringInvoiceColumns() {
             <div className="w-full max-h-48 overflow-auto whitespace-normal break-all">
               <article
                 className={classNames('prose prose-sm', {
-                  'prose-invert': !reactSettings?.dark_mode,
+                  'prose-invert': colors.$0 === 'light',
                 })}
                 dangerouslySetInnerHTML={{
                   __html: sanitizeHTML(value as string),

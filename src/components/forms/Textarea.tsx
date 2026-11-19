@@ -35,10 +35,11 @@ export function Textarea(props: Props) {
       <textarea
         rows={props.rows ?? 5}
         id={props.id}
-        className={`form-textarea w-full py-2 px-3 rounded border border-gray-300 text-sm ${props.className}`}
+        className={`form-textarea w-full py-2 px-3 rounded border text-sm ${props.className}`}
         style={{
           backgroundColor: colors.$1,
           color: colors.$3,
+          borderColor: colors.$24,
           colorScheme: colors.$0,
         }}
         placeholder={props.placeholder}

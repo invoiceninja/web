@@ -147,7 +147,7 @@ export function Default(props: Props) {
       <div style={{ backgroundColor: colors.$23 }}>
         {topRight && (
           <div
-            style={{ backgroundColor: colors.$1 }}
+            style={{ backgroundColor: colors.$1, borderColor: colors.$5 }}
             className="sticky top-0 z-10 flex justify-end items-center border-b px-4 py-2 space-x-3"
           >
             {topRight}
@@ -156,7 +156,7 @@ export function Default(props: Props) {
 
         <main
           style={{ color: colors.$3 }}
-          className="p-2 md:p-4 dark:text-gray-100"
+          className="p-2 md:p-4"
         >
           {props.children}
         </main>
@@ -192,12 +192,13 @@ export function Default(props: Props) {
         })}
       >
         <div
-          style={{ backgroundColor: colors.$1 }}
-          className="sticky top-0 z-10 flex-shrink-0 flex h-16 border-b shadow"
+          style={{ backgroundColor: colors.$1, borderColor: colors.$5 }}
+          className="sticky top-0 z-10 flex-shrink-0 flex h-16 border-b"
         >
           <button
             type="button"
-            className="px-4 border-r border-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
+            className="px-4 border-r focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
+            style={{ borderColor: colors.$5 }}
             onClick={() => setSidebarOpen(true)}
           >
             <span className="sr-only">Open sidebar</span>
@@ -336,7 +337,7 @@ export function Default(props: Props) {
         <main className="flex-1">
           {(props.breadcrumbs || props.topRight || props.afterBreadcrumbs) &&
             props.breadcrumbs.length > 0 && (
-              <div className="pt-4 px-4 md:px-6 md:pt-6 dark:text-gray-100 flex flex-col lg:flex-row lg:justify-between lg:items-center space-y-4 lg:space-y-0">
+              <div className="pt-4 px-4 md:px-6 md:pt-6 flex flex-col lg:flex-row lg:justify-between lg:items-center space-y-4 lg:space-y-0">
                 <div className="flex items-center w-full">
                   {props.breadcrumbs && (
                     <Breadcrumbs pages={props.breadcrumbs} />
@@ -351,7 +352,7 @@ export function Default(props: Props) {
 
           <div
             style={{ color: colors.$3, backgroundColor: colors.$23 }}
-            className="p-4 xl:px-6 dark:text-gray-100"
+            className="p-4 xl:px-6"
           >
             {props.children}
           </div>

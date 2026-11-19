@@ -35,8 +35,8 @@ export function Timeline({ item, nextItemCompleted, isFirstItem }: PropsType) {
         className={classNames(
           'mb-1 flex flex-col items-start before:absolute before:left-4 before:h-full before:-translate-x-1/2 before:translate-y-3 before:self-start before:px-px after:absolute after:left-4 after:box-content after:h-2 after:w-2 after:-translate-x-1/2 after:translate-y-1.5 after:rounded-full after:border-4 after:border-slate-50 group-last:before:hidden xl:flex-row xl:before:left-0 xl:before:ml-[6.5rem] xl:after:left-0 xl:after:ml-[6.5rem]',
           {
-            'after:bg-indigo-600': item.completed && !reactSettings.dark_mode,
-            'after:bg-indigo-400': item.completed && reactSettings.dark_mode,
+            'after:bg-indigo-600': item.completed && colors.$0 === 'light',
+            'after:bg-indigo-400': item.completed && colors.$0 === 'dark',
             'after:bg-gray-400': !item.completed,
             'before:bg-slate-300': nextItemCompleted,
             'before:border-l before:border-dashed before:border-slate-300':

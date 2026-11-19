@@ -31,7 +31,7 @@ export function Callout({ title, children, onDismiss, dismissLabel }: Props) {
       style={{
         borderRadius: '0.375rem',
         borderColor: colors.$24,
-        backgroundColor: reactSettings?.dark_mode ? colors.$25 : colors.$2,
+        backgroundColor: colors.$0 === 'dark' ? colors.$25 : colors.$2,
       }}
     >
       <div className="flex items-start justify-between gap-3">

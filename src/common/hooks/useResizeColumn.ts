@@ -74,9 +74,6 @@ export function useResizeColumn(resizable: string | undefined) {
 
   const handleMouseMove = useCallback(
     (e: MouseEvent | React.MouseEvent) => {
-      document.body.style.cursor =
-        inResizeZone(e) && resizable ? 'ew-resize' : '';
-
       if (!isResizing || !thRef.current || currentWidth === null) return;
 
       const dx = e.clientX - startX;
@@ -101,29 +98,23 @@ export function useResizeColumn(resizable: string | undefined) {
   }, []);
 
   useEffect(() => {
-    if (isResizing) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
-    } else {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-    }
+    if (!isResizing) return;
 
     const table = thRef.current?.closest('table');
 
-    if (table) {
-      if (isResizing) {
-        table.classList.add('is-resizing');
-      } else {
-        table.classList.remove('is-resizing');
-      }
-    }
+    document.body.style.cursor = 'col-resize';
+    table?.classList.add('is-resizing');
 
-    document.body.style.cursor = isResizing && resizable ? 'ew-resize' : '';
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener('blur', handleMouseUp);
 
     return () => {
+      document.body.style.cursor = '';
+      table?.classList.remove('is-resizing');
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('blur', handleMouseUp);
     };
   }, [isResizing, handleMouseMove, handleMouseUp]);
 

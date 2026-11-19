@@ -35,8 +35,10 @@ import {
 import { DataTableColumnsExtended } from '$app/pages/invoices/common/hooks/useInvoiceColumns';
 import classNames from 'classnames';
 import { TagPills } from '$app/components/tags/TagPills';
+import { useColorScheme } from '$app/common/colors';
 
 export function useTransactionColumns() {
+  const colors = useColorScheme();
   const invoicePaths = useInvoiceEditorPaths();
   const { t } = useTranslation();
 
@@ -140,7 +142,7 @@ export function useTransactionColumns() {
             <div className="w-full max-h-48 overflow-auto whitespace-normal break-all">
               <article
                 className={classNames('prose prose-sm', {
-                  'prose-invert': !reactSettings?.dark_mode,
+                  'prose-invert': colors.$0 === 'light',
                 })}
                 dangerouslySetInnerHTML={{
                   __html: sanitizeHTML(cleanDescriptionText(value as string)),

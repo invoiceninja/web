@@ -98,8 +98,8 @@ export function ColorPicker(props: Props) {
             className={classNames(
               'border rounded-md my-2 p-2 focus:outline-none focus:ring-0',
               {
-                'border-[#d1d5db] focus:border-black': !reactSettings.dark_mode,
-                'border-[#1f2e41] focus:border-white': reactSettings.dark_mode,
+                'border-[#d1d5db] focus:border-black': colors.$0 === 'light',
+                'border-[#2E2E34] focus:border-white': colors.$0 === 'dark',
               }
             )}
             style={{

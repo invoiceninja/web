@@ -473,8 +473,8 @@ export function DashboardCardSelector() {
                 className={classNames(
                   'flex items-center justify-between rounded-md px-2 py-2 mx-2 mb-0.5',
                   {
-                    'bg-gray-100': !reactSettings.dark_mode,
-                    'bg-[#1f2e41]': reactSettings.dark_mode,
+                    'bg-gray-100': colors.$0 === 'light',
+                    'bg-[#2F2F36]': colors.$0 === 'dark',
                   }
                 )}
               >
@@ -521,8 +521,8 @@ export function DashboardCardSelector() {
                           className={classNames(
                             'flex items-center justify-between rounded-md px-2 py-2',
                             {
-                              'bg-gray-100': !reactSettings.dark_mode,
-                              'bg-[#1f2e41]': reactSettings.dark_mode,
+                              'bg-gray-100': colors.$0 === 'light',
+                              'bg-[#2F2F36]': colors.$0 === 'dark',
                             }
                           )}
                           {...provided.draggableProps}
@@ -554,8 +554,8 @@ export function DashboardCardSelector() {
                                   className={classNames(
                                     'flex items-center justify-between rounded-md px-2 py-2',
                                     {
-                                      'bg-gray-100': !reactSettings.dark_mode,
-                                      'bg-[#1f2e41]': reactSettings.dark_mode,
+                                      'bg-gray-100': colors.$0 === 'light',
+                                      'bg-[#2F2F36]': colors.$0 === 'dark',
                                     }
                                   )}
                                   {...provided.draggableProps}

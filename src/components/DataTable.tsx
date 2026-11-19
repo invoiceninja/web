@@ -1008,7 +1008,7 @@ export function DataTable<T extends object>(props: Props<T>) {
               !props.withoutAllBulkActions
           ) && (
             <Dropdown
-              label={t('actions')}
+              label={t('actions')} variant="secondary"
               disabled={!selected.length}
               cypressRef="bulkActionsDropdown"
               triggerCypressRef="bulkActionsTrigger"
@@ -1309,7 +1309,7 @@ export function DataTable<T extends object>(props: Props<T>) {
 
                   {props.withResourcefulActions && !hideEditableOptions && (
                     <Td>
-                      <Dropdown label={t('actions')}>
+                      <Dropdown label={t('actions')} variant="secondary">
                         {props.linkToEdit &&
                           (props.showEdit?.(resource) || !props.showEdit) && (
                             <DropdownElement

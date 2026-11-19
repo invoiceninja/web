@@ -8,7 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { ConfigProvider, DatePicker } from 'antd';
+import { ConfigProvider, DatePicker, theme as antdTheme } from 'antd';
 import type { Locale } from 'antd/es/locale';
 import dayjs from 'dayjs';
 import { atom, useAtomValue } from 'jotai';
@@ -238,7 +238,15 @@ export function DropdownDateRangePicker(props: Props) {
             } as React.CSSProperties
           }
         >
-          <ConfigProvider locale={antdLocale ?? undefined}>
+          <ConfigProvider
+            locale={antdLocale ?? undefined}
+            theme={{
+              algorithm:
+                colors.$0 === 'dark'
+                  ? antdTheme.darkAlgorithm
+                  : antdTheme.defaultAlgorithm,
+            }}
+          >
             <StyledRangePicker
               size="large"
               className="rounded-md"
@@ -252,7 +260,7 @@ export function DropdownDateRangePicker(props: Props) {
                 borderTopLeftRadius: '0',
                 borderBottomLeftRadius: '0',
               }}
-              separator={<span style={{ color: colors.$4 }}>—</span>}
+              separator={<span style={{ color: colors.$17 }}>—</span>}
               allowClear={false}
             />
           </ConfigProvider>

@@ -9,7 +9,7 @@
  */
 
 import Tippy from '@tippyjs/react/headless';
-import { ConfigProvider, DatePicker } from 'antd';
+import { ConfigProvider, theme as antdTheme } from 'antd';
 import dayjs from 'dayjs';
 import { useAtomValue } from 'jotai';
 import { useEffect, useRef, useState } from 'react';
@@ -22,7 +22,7 @@ import {
   serializeDateRange,
 } from '$app/common/helpers/dateRange';
 import { useCurrentCompanyDateFormats } from '$app/common/hooks/useCurrentCompanyDateFormats';
-import { antdLocaleAtom } from '../DropdownDateRangePicker';
+import { antdLocaleAtom, StyledRangePicker } from '../DropdownDateRangePicker';
 import { Icon } from '../icons/Icon';
 
 interface Props {
@@ -45,8 +45,6 @@ export function DateRangePicker({
   onClick,
 }: Props) {
   const divRef = useRef(null);
-
-  const { RangePicker } = DatePicker;
 
   const colors = useColorScheme();
 
@@ -102,15 +100,31 @@ export function DateRangePicker({
         render={() => (
           <div
             className="flex flex-col p-3"
-            style={{
-              backgroundColor: colors.$2,
-              border: `1px solid ${colors.$5}`,
-              width: 300,
-            }}
+            style={
+              {
+                backgroundColor: colors.$2,
+                border: `1px solid ${colors.$5}`,
+                width: 300,
+                '--accent-color': colors.$3,
+                '--active-state-bg': colors.$4,
+                '--calendar-bg': colors.$2,
+                '--input-text-color': colors.$3,
+                '--picker-border-color': colors.$5,
+                '--picker-bg': colors.$1,
+              } as React.CSSProperties
+            }
             onClick={(event) => event.stopPropagation()}
           >
-            <ConfigProvider locale={antdLocale ?? undefined}>
-              <RangePicker
+            <ConfigProvider
+              locale={antdLocale ?? undefined}
+              theme={{
+                algorithm:
+                  colors.$0 === 'dark'
+                    ? antdTheme.darkAlgorithm
+                    : antdTheme.defaultAlgorithm,
+              }}
+            >
+              <StyledRangePicker
                 size="large"
                 value={[
                   internalStartDate.length > 0

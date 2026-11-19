@@ -56,6 +56,7 @@ import { useFormatNumber } from '$app/common/hooks/useFormatNumber';
 import classNames from 'classnames';
 import { normalizeColumnName } from '$app/common/helpers/data-table';
 import { TagPills } from '$app/components/tags/TagPills';
+import { useColorScheme } from '$app/common/colors';
 
 export const defaultColumns: string[] = [
   'product_key',
@@ -103,6 +104,7 @@ export function useAllProductColumns() {
 }
 
 export function useProductColumns() {
+  const colors = useColorScheme();
   const { t } = useTranslation();
 
   const productColumns = useAllProductColumns();
@@ -152,7 +154,7 @@ export function useProductColumns() {
             <div className="w-full max-h-48 overflow-auto whitespace-normal break-all">
               <article
                 className={classNames('prose prose-sm', {
-                  'prose-invert': !reactSettings?.dark_mode,
+                  'prose-invert': colors.$0 === 'light',
                 })}
                 dangerouslySetInnerHTML={{
                   __html: sanitizeHTML(value as string),

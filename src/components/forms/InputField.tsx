@@ -104,8 +104,8 @@ export function InputField(props: Props) {
             `w-full py-2 px-3 rounded-md text-sm disabled:opacity-75 disabled:cursor-not-allowed focus:outline-none focus:ring-0 ${props.className}`,
             {
               border: props.border !== false,
-              'border-[#09090B26] focus:border-black': !reactSettings.dark_mode,
-              'border-[#1f2e41] focus:border-white': reactSettings.dark_mode,
+              'border-[#09090B26] focus:border-black': colors.$0 === 'light',
+              'border-[#2E2E34] focus:border-white': colors.$0 === 'dark',
             }
           )}
           placeholder={props.placeholder || ''}
@@ -183,9 +183,9 @@ export function InputField(props: Props) {
               'focus:outline-none focus:ring-2',
               {
                 'text-gray-400 hover:text-gray-600 hover:bg-gray-100 focus:ring-gray-300':
-                  !reactSettings.dark_mode,
+                  colors.$0 === 'light',
                 'text-gray-400 hover:text-gray-300 hover:bg-gray-800 focus:ring-gray-600':
-                  reactSettings.dark_mode,
+                  colors.$0 === 'dark',
               }
             )}
             onClick={() => props.onValueChange?.('')}

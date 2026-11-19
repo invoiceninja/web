@@ -129,7 +129,10 @@ export function RecoverPassword() {
         </div>
 
         {isHosted() && (
-          <div className="bg-white mx-4 max-w-md w-full rounded md:shadow-lg mt-4">
+          <div
+            className="mx-4 max-w-md w-full rounded md:shadow-lg mt-4"
+            style={{ backgroundColor: colors.$1 }}
+          >
             <HostedLinks />
           </div>
         )}

@@ -54,7 +54,7 @@ export function Radio(props: Props) {
               className="focus:ring-0 h-4 w-4 disabled:opacity-75 disabled:cursor-not-allowed cursor-pointer focus:ring-offset-0"
               style={{
                 color: 'black',
-                borderColor: reactSettings?.dark_mode
+                borderColor: colors.$0 === 'dark'
                   ? 'white'
                   : option.value === props.defaultSelected
                     ? ''

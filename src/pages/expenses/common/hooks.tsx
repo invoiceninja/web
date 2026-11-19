@@ -79,6 +79,7 @@ import { normalizeColumnName } from '$app/common/helpers/data-table';
 import { useDisplayRunTemplateActions } from '$app/common/hooks/useDisplayRunTemplateActions';
 import { Frequency } from '$app/common/enums/frequency';
 import { TagPills } from '$app/components/tags/TagPills';
+import { useColorScheme } from '$app/common/colors';
 
 interface ActionsParams {
   showEditAction?: boolean;
@@ -303,6 +304,7 @@ export function useAllExpenseColumns() {
 }
 
 export function useExpenseColumns() {
+  const colors = useColorScheme();
   const invoicePaths = useInvoiceEditorPaths();
   const { t } = useTranslation();
   const { dateFormat } = useCurrentCompanyDateFormats();
@@ -441,7 +443,7 @@ export function useExpenseColumns() {
             <div className="w-full max-h-48 overflow-auto whitespace-normal break-all">
               <article
                 className={classNames('prose prose-sm', {
-                  'prose-invert': !reactSettings?.dark_mode,
+                  'prose-invert': colors.$0 === 'light',
                 })}
                 dangerouslySetInnerHTML={{
                   __html: sanitizeHTML(value as string),
@@ -552,7 +554,7 @@ export function useExpenseColumns() {
             <div className="w-full max-h-48 overflow-auto whitespace-normal break-all">
               <article
                 className={classNames('prose prose-sm', {
-                  'prose-invert': !reactSettings?.dark_mode,
+                  'prose-invert': colors.$0 === 'light',
                 })}
                 dangerouslySetInnerHTML={{
                   __html: sanitizeHTML(value as string),

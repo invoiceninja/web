@@ -92,7 +92,7 @@ export function Th$(props: Props) {
       className={classNames(
         `text-left font-normal tracking-wider whitespace-nowrap ${props.className}`,
         {
-          'border-r relative': props.resizable,
+          'relative border-r': props.resizable,
           'py-2.5': !props.withoutVerticalPadding,
           'text-xs': props.textSize === 'extraSmall',
           'text-sm': props.textSize === 'small' || !props.textSize,

@@ -104,6 +104,7 @@ export function SelectField(props: SelectProps) {
         minWidth: '100%',
         backgroundColor: colors.$4,
         borderColor: colors.$4,
+        fontSize: '0.875rem',
         zIndex: 50,
       });
     },
@@ -112,6 +113,7 @@ export function SelectField(props: SelectProps) {
         borderRadius: '0.375rem',
         backgroundColor: colors.$1,
         color: colors.$3,
+        fontSize: '0.875rem',
         borderColor: isFocused ? colors.$3 : colors.$24,
         cursor: isDisabled ? 'not-allowed' : 'pointer',
         pointerEvents: readOnly ? 'none' : isDisabled ? 'auto' : 'unset',
@@ -127,6 +129,7 @@ export function SelectField(props: SelectProps) {
         display: 'flex',
         alignItems: 'center',
         color: colors.$3,
+        fontSize: '0.875rem',
         backgroundColor: isSelected || isFocused ? colors.$7 : colors.$1,
         ':hover': {
           backgroundColor: colors.$7,
@@ -211,7 +214,7 @@ export function SelectField(props: SelectProps) {
               Control: ({ children: controlChildren, ...rest }) => (
                 <div
                   className={classNames(
-                    'flex items-center rounded-md border cursor-pointer',
+                    'flex items-center rounded-md border cursor-pointer text-sm',
                     {
                       'pl-2': controlIcon && !withoutControlPadding,
                       'pl-1': !controlIcon && !withoutControlPadding,

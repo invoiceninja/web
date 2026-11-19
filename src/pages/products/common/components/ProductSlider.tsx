@@ -271,7 +271,7 @@ export function ProductSlider() {
                     className={classNames(
                       'prose prose-sm max-w-none break-words',
                       {
-                        'prose-invert': reactSettings?.dark_mode,
+                        'prose-invert': colors.$0 === 'dark',
                       }
                     )}
                     dangerouslySetInnerHTML={{
