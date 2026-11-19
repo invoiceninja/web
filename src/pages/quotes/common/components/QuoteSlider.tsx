@@ -418,7 +418,7 @@ export function QuoteSlider() {
                   tooltipElement={
                     <article
                       className={classNames('prose prose-sm', {
-                        'prose-invert': colors.$0 === 'dark',
+                        'prose-invert': colors.$0 === 'light',
                       })}
                       dangerouslySetInnerHTML={{
                         __html: sanitizeHTML(
