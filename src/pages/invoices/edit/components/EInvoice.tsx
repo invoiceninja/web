@@ -22,7 +22,13 @@ import { endpoint, trans } from '$app/common/helpers';
 import { request } from '$app/common/helpers/request';
 import { route } from '$app/common/helpers/route';
 import { toast } from '$app/common/helpers/toast/toast';
+import {
+  useAdmin,
+  useHasPermission,
+} from '$app/common/hooks/permissions/useHasPermission';
 import { useCurrentCompany } from '$app/common/hooks/useCurrentCompany';
+import { useDisableNavigation } from '$app/common/hooks/useDisableNavigation';
+import { useEntityAssigned } from '$app/common/hooks/useEntityAssigned';
 import { $refetch } from '$app/common/hooks/useRefetch';
 import { useSendCooldown } from '$app/common/hooks/useSendCooldown';
 import { GenericManyResponse } from '$app/common/interfaces/generic-many-response';
@@ -30,6 +36,7 @@ import { Invoice } from '$app/common/interfaces/invoice';
 import { InvoiceActivity } from '$app/common/interfaces/invoice-activity';
 import { ValidationBag } from '$app/common/interfaces/validation-bag';
 import { Card, Element } from '$app/components/cards';
+import { withOrderReference } from '$app/components/e-invoice/line-fields/fields';
 import { Button, InputField, Link } from '$app/components/forms';
 import { Icon } from '$app/components/icons/Icon';
 import { EInvoiceComponent } from '$app/pages/settings';
@@ -63,6 +70,12 @@ export default function EInvoice() {
   const location = useLocation();
   const colors = useColorScheme();
   const company = useCurrentCompany();
+
+  const { isAdmin, isOwner } = useAdmin();
+
+  const hasPermission = useHasPermission();
+  const entityAssigned = useEntityAssigned();
+  const disableNavigation = useDisableNavigation();
 
   const context: Context = useOutletContext();
 
@@ -145,7 +158,9 @@ export default function EInvoice() {
       </Link>
     );
 
-    const clientElement = (
+    const clientElement = disableNavigation('client', invoice?.client) ? (
+      invoice?.client?.display_name
+    ) : (
       <Link to={route('/clients/:id', { id: invoice?.client_id })}>
         {invoice?.client?.display_name}
       </Link>
@@ -166,6 +181,27 @@ export default function EInvoice() {
     set(updatedInvoice, property, value);
 
     setInvoice(updatedInvoice);
+  };
+
+  const orderReference =
+    get(invoice, 'e_invoice.Invoice.OrderReference.ID.value') || '';
+
+  const handleOrderReferenceChange = (value: string) => {
+    if (value === orderReference) {
+      return;
+    }
+
+    setInvoice(
+      (current) =>
+        current && {
+          ...current,
+          e_invoice: withOrderReference(
+            current.e_invoice,
+            'Invoice',
+            value
+          ) as Invoice['e_invoice'],
+        }
+    );
   };
 
   const isInvoiceEditable = (invoice?: Invoice): boolean => {
@@ -246,17 +282,19 @@ export default function EInvoice() {
                           </Link>
                         )}
 
-                        {entity === 'client' && (
-                          <Link
-                            to={route('/clients/:id/edit', {
-                              id: invoice?.client_id,
-                            })}
-                          >
-                            {t('edit_client')}
-                          </Link>
-                        )}
+                        {entity === 'client' &&
+                          (hasPermission('edit_client') ||
+                            entityAssigned(invoice?.client)) && (
+                            <Link
+                              to={route('/clients/:id/edit', {
+                                id: invoice?.client_id,
+                              })}
+                            >
+                              {t('edit_client')}
+                            </Link>
+                          )}
 
-                        {entity === 'company' && (
+                        {entity === 'company' && (isAdmin || isOwner) && (
                           <Link to="/settings/company_details">
                             {t('settings')}
                           </Link>
@@ -408,6 +446,25 @@ export default function EInvoice() {
           />
         </Element>
       </Card>
+
+      {company?.settings.e_invoice_type === 'PEPPOL' && (
+        <Card title={t('order_reference')}>
+          <Element
+            leftSide={t('order_number')}
+            leftSideHelp={t('order_reference_help')}
+          >
+            <InputField
+              changeOverride
+              debounceTimeout={0}
+              value={orderReference}
+              onValueChange={handleOrderReferenceChange}
+              errorMessage={
+                errors?.errors?.['e_invoice.OrderReference.ID.value']
+              }
+            />
+          </Element>
+        </Card>
+      )}
     </>
   );
 }

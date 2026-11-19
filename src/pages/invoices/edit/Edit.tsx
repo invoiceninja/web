@@ -20,6 +20,7 @@ import {
 } from 'react-router-dom';
 import { useColorScheme } from '$app/common/colors';
 import { route } from '$app/common/helpers/route';
+import { useDisableNavigation } from '$app/common/hooks/useDisableNavigation';
 import { useReactSettings } from '$app/common/hooks/useReactSettings';
 import { useScrollToLineItem } from '$app/common/hooks/useScrollToLineItem';
 import { Client } from '$app/common/interfaces/client';
@@ -30,6 +31,9 @@ import { ValidationBag } from '$app/common/interfaces/validation-bag';
 import { Assigned } from '$app/components/Assigned';
 import { Badge } from '$app/components/Badge';
 import { Card } from '$app/components/cards';
+import { EInvoiceLines } from '$app/components/e-invoice/line-fields/EInvoiceLines';
+import { EInvoiceLinesTabLabel } from '$app/components/e-invoice/line-fields/EInvoiceLinesTabLabel';
+import { useEInvoiceLineFields } from '$app/components/e-invoice/line-fields/useEInvoiceLineFields';
 import { InputLabel, Link } from '$app/components/forms';
 import { HiddenResourceTaxesAlert } from '$app/components/HiddenResourceTaxesAlert';
 import { Icon } from '$app/components/icons/Icon';
@@ -80,6 +84,7 @@ export default function Edit() {
   const [searchParams] = useSearchParams();
 
   const navigate = useNavigate();
+  const disableNavigation = useDisableNavigation();
 
   const context: Context = useOutletContext();
   const {
@@ -97,6 +102,7 @@ export default function Edit() {
   const taskColumns = useTaskColumns();
   const reactSettings = useReactSettings();
   const productColumns = useProductColumns();
+  const eInvoiceLineFields = useEInvoiceLineFields(invoice, 'Invoice');
   const { defaultTabIndex } = useDefaultTabIndex(invoice);
 
   useScrollToLineItem(Boolean(invoice && client));
@@ -169,24 +175,26 @@ export default function Edit() {
               </div>
             )}
 
-            {invoice && invoice.recurring_id && (
-              <div className="flex items-center space-x-9">
-                <span
-                  className="text-sm font-medium"
-                  style={{ color: colors.$22 }}
-                >
-                  {t('recurring_invoice')}
-                </span>
+            {invoice &&
+              invoice.recurring_id &&
+              !disableNavigation('recurring_invoice', null) && (
+                <div className="flex items-center space-x-9">
+                  <span
+                    className="text-sm font-medium"
+                    style={{ color: colors.$22 }}
+                  >
+                    {t('recurring_invoice')}
+                  </span>
 
-                <Link
-                  to={route('/recurring_invoices/:id/edit', {
-                    id: invoice.recurring_id,
-                  })}
-                >
-                  {t('view')}
-                </Link>
-              </div>
-            )}
+                  <Link
+                    to={route('/recurring_invoices/:id/edit', {
+                      id: invoice.recurring_id,
+                    })}
+                  >
+                    {t('view')}
+                  </Link>
+                </div>
+              )}
 
             {invoice &&
               invoice.sync?.dn_completed &&
@@ -270,11 +278,27 @@ export default function Edit() {
           )}
 
           <TabGroup
-            tabs={[t('products'), t('tasks')]}
+            tabs={[
+              t('products'),
+              t('tasks'),
+              ...(eInvoiceLineFields.length
+                ? [t('e_invoice_line_fields')]
+                : []),
+            ]}
             defaultTabIndex={defaultTabIndex}
             formatTabLabel={(index) => {
               if (index === 1) {
                 return <TasksTabLabel lineItems={invoice?.line_items || []} />;
+              }
+
+              if (index === 2) {
+                return (
+                  <EInvoiceLinesTabLabel
+                    eInvoice={invoice?.e_invoice}
+                    root="Invoice"
+                    errors={errors}
+                  />
+                );
               }
             }}
           >
@@ -334,6 +358,18 @@ export default function Edit() {
                 <Spinner />
               )}
             </div>
+
+            {invoice && eInvoiceLineFields.length ? (
+              <EInvoiceLines
+                resource={invoice}
+                root="Invoice"
+                fields={eInvoiceLineFields}
+                client={client}
+                onChange={(eInvoice) => handleChange('e_invoice', eInvoice)}
+              />
+            ) : (
+              <div />
+            )}
           </TabGroup>
         </div>
 

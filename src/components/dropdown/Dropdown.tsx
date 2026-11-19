@@ -112,13 +112,14 @@ const popperOptions: TippyProps['popperOptions'] = {
 export function Dropdown(props: Props) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
+  const [isContentMounted, setIsContentMounted] = useState(false);
 
   const colors = useColorScheme();
   const accentColor = useAccentColor();
 
   const isSecondary = props.variant === 'secondary';
 
-  const [children, setChildren] = useState<ReactNode>();
+  const [children, setChildren] = useState<ReactNode[]>();
 
   const getPropsWithChildType = (
     childType: string | typeof DropdownElement,
@@ -132,6 +133,11 @@ export function Dropdown(props: Props) {
     } else {
       return { setVisible, key: index };
     }
+  };
+
+  const handleToggle = () => {
+    setVisible(!visible);
+    setIsContentMounted(true);
   };
 
   useClickAway(ref, () => {
@@ -161,17 +167,15 @@ export function Dropdown(props: Props) {
             }}
             data-cy={props.cypressRef}
           >
-            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-            {/* @ts-ignore */}
-            {children?.map((child, index: number) =>
-              child &&
-              (child['type'] == DropdownElement || child['type'] == 'div')
-                ? cloneElement(
-                    child,
-                    getPropsWithChildType(child['type'], index)
-                  )
-                : child
-            )}
+            {isContentMounted &&
+              children?.map((child: any, index: number) =>
+                child && (child.type == DropdownElement || child.type == 'div')
+                  ? cloneElement(
+                      child,
+                      getPropsWithChildType(child.type, index)
+                    )
+                  : child
+              )}
           </DropdownElements>
         )}
         visible={visible}
@@ -181,7 +185,7 @@ export function Dropdown(props: Props) {
             onClick={(event) => {
               event.stopPropagation();
               event.preventDefault();
-              setVisible(!visible);
+              handleToggle();
             }}
           >
             {props.customLabel}
@@ -196,7 +200,7 @@ export function Dropdown(props: Props) {
             }}
             type="button"
             disabled={props.disabled}
-            onClick={() => setVisible(!visible)}
+            onClick={handleToggle}
             className={classNames(
               `border inline-flex items-center space-x-2 px-4 justify-center rounded-md text-sm disabled:cursor-not-allowed disabled:opacity-75 py-2 ${props.className}`,
               {
