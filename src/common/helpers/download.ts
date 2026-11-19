@@ -8,8 +8,10 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-// Currently used by account-management invoice downloads; broader blob download
-// migrations should happen in a focused follow-up PR.
+// The file name in a Content-Disposition header (RFC 6266). The server is
+// Laravel on Symfony, which writes `filename*` with a lower-case `utf-8''` and
+// quotes a name holding a space or a `;`, so the quoted form is read as a
+// quoted string rather than up to the first `;`.
 export function extractFilenameFromContentDisposition(
   contentDisposition?: string | string[] | null
 ) {
@@ -21,15 +23,33 @@ export function extractFilenameFromContentDisposition(
     return '';
   }
 
-  const encodedFilename = header.match(/filename\*=UTF-8''([^;]+)/);
+  const encodedFilename = header.match(
+    /filename\*\s*=\s*"?[^'";]*'[^']*'([^";\s]+)/i
+  );
 
   if (encodedFilename?.[1]) {
-    return decodeURIComponent(encodedFilename[1]);
+    try {
+      const decoded = decodeURIComponent(encodedFilename[1]).trim();
+
+      if (decoded) {
+        return decoded;
+      }
+    } catch {
+      // A malformed escape falls back to the plain name.
+    }
   }
 
-  const filename = header.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
+  const quotedFilename = header.match(
+    /(?:^|;)\s*filename\s*=\s*"((?:[^"\\]|\\.)*)"/i
+  );
 
-  return filename?.[1]?.replace(/['"]/g, '') || '';
+  if (quotedFilename) {
+    return quotedFilename[1].replace(/\\(.)/g, '$1').trim();
+  }
+
+  const filename = header.match(/(?:^|;)\s*filename\s*=\s*([^;]*)/i);
+
+  return filename?.[1]?.trim() || '';
 }
 
 export function extractFilenameFromHeaders(
