@@ -311,7 +311,7 @@ export function usePaymentColumns() {
             <div className="w-full max-h-48 overflow-auto whitespace-normal break-all">
               <article
                 className={classNames('prose prose-sm', {
-                  'prose-invert': colors.$0 === 'dark',
+                  'prose-invert': colors.$0 === 'light',
                 })}
                 dangerouslySetInnerHTML={{
                   __html: sanitizeHTML(value as string),
