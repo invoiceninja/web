@@ -31,6 +31,7 @@ import { register } from '../../common/stores/slices/user';
 import { Button } from '../../components/forms/Button';
 import { InputField } from '../../components/forms/InputField';
 import { Link } from '../../components/forms/Link';
+import { buildAttribution } from './common/attribution';
 import { RegisterValidation } from './common/ValidationInterface';
 import { Header } from './components/Header';
 import { HostedLinks } from './components/HostedLinks';
@@ -97,17 +98,11 @@ export function Register() {
       apiEndpoint()
     );
 
-    [
-      'utm_source',
-      'utm_medium',
-      'utm_campaign',
-      'utm_content',
-      'utm_term',
-    ].forEach((key) => {
-      if (searchParams.has(key)) {
-        endpoint.searchParams.append(key, searchParams.get(key) as string);
-      }
-    });
+    const attribution = buildAttribution(searchParams);
+
+    if (Object.keys(attribution).length > 0) {
+      values.attribution = attribution;
+    }
 
     const rc = searchParams.get('rc');
 

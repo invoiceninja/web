@@ -20,6 +20,7 @@ export interface RegisterForm {
   password_confirmation: string;
   terms_of_service: boolean;
   privacy_policy: boolean;
+  attribution?: Record<string, string>;
 }
 
 export interface ForgotPasswordForm {
