@@ -99,11 +99,26 @@ export function useAuthenticated(): boolean {
             );
           }
 
+          const storedToken = currentToken() as string;
+
+          // The server lists every company's current token. One it no longer
+          // lists has been rotated, so it gives way to this company's new one;
+          // one it still lists is kept, whichever company it belongs to. A
+          // stored index past the companies listed (/refresh pages at 20) may
+          // be a company left out, so its token is kept too.
+          const isRotated =
+            (!storedIndex || parseInt(storedIndex) < companyUsers.length) &&
+            !companyUsers.some(
+              (companyUser) => companyUser.token?.token === storedToken
+            );
+
           dispatch(
             authenticate({
               type: AuthenticationTypes.TOKEN,
               user: response.data.data[currentIndex].user,
-              token: currentToken() as string,
+              token:
+                (isRotated && companyUsers[currentIndex].token?.token) ||
+                storedToken,
             })
           );
 
