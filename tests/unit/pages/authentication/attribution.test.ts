@@ -8,10 +8,50 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { describe, expect, test } from 'vitest';
-import { buildAttribution } from '$app/pages/authentication/common/attribution';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
+import {
+  buildAttribution,
+  clearAttribution,
+  rememberAttribution,
+} from '$app/pages/authentication/common/attribution';
 
 describe('buildAttribution', () => {
+  const memory = new Map<string, string>();
+
+  beforeEach(() => {
+    memory.clear();
+
+    vi.stubGlobal('sessionStorage', {
+      getItem: (key: string) => memory.get(key) ?? null,
+      setItem: (key: string, value: string) => void memory.set(key, value),
+      removeItem: (key: string) => void memory.delete(key),
+    });
+  });
+
+  test('remembers the params so an oauth redirect keeps them', () => {
+    rememberAttribution(new URLSearchParams('utm_source=google&gclid=abc'));
+
+    expect(buildAttribution(new URLSearchParams(''), '')).toEqual({
+      utm_source: 'google',
+      gclid: 'abc',
+    });
+  });
+
+  test('prefers the params currently in the url', () => {
+    rememberAttribution(new URLSearchParams('utm_source=google'));
+
+    expect(
+      buildAttribution(new URLSearchParams('utm_source=facebook'), '')
+    ).toEqual({ utm_source: 'facebook' });
+  });
+
+  test('clears once the signup is done', () => {
+    rememberAttribution(new URLSearchParams('utm_source=google'));
+    clearAttribution();
+
+    expect(buildAttribution(new URLSearchParams(''), '')).toEqual({});
+  });
+
   test('forwards every query param so the API can filter them', () => {
     const attribution = buildAttribution(
       new URLSearchParams(

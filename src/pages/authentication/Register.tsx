@@ -31,8 +31,11 @@ import { register } from '../../common/stores/slices/user';
 import { Button } from '../../components/forms/Button';
 import { InputField } from '../../components/forms/InputField';
 import { Link } from '../../components/forms/Link';
-import { buildAttribution } from './common/attribution';
-import { RegisterValidation } from './common/ValidationInterface';
+import {
+  buildAttribution,
+  clearAttribution,
+  rememberAttribution,
+} from './common/attribution';import { RegisterValidation } from './common/ValidationInterface';
 import { Header } from './components/Header';
 import { HostedLinks } from './components/HostedLinks';
 import { OrDivider } from './components/OrDivider';
@@ -58,6 +61,10 @@ export function Register() {
   const dispatch = useDispatch();
 
   const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    rememberAttribution(searchParams);
+  }, [searchParams]);
 
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -127,6 +134,8 @@ export function Register() {
         dispatch(updateCompanyUsers(response.data.data));
         dispatch(resetChanges('company'));
         dispatch(changeCurrentIndex(0));
+
+        clearAttribution();
       })
       .catch((error: AxiosError<GenericValidationBag<RegisterValidation>>) => {
         if (error.response?.status === 422) {
