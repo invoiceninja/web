@@ -67,6 +67,14 @@ describe('extractFilenameFromContentDisposition', () => {
     ).toBe('');
   });
 
+  test('falls back to the ASCII filename when filename* is malformed', () => {
+    expect(
+      extractFilenameFromContentDisposition(
+        "attachment; filename=invoice_123.pdf; filename*=utf-8''%E8"
+      )
+    ).toBe('invoice_123.pdf');
+  });
+
   test('accepts an array header and uses the first value', () => {
     expect(
       extractFilenameFromHeaders({

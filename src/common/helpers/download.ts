@@ -28,13 +28,13 @@ export function extractFilenameFromContentDisposition(
     try {
       return decodeURIComponent(encodedFilename[1].trim());
     } catch {
-      return '';
+      // Fall through to the ASCII filename= fallback.
     }
   }
 
-  const filename = header.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
+  const filename = header.match(/filename(?!\*)[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
 
-  return filename?.[1]?.replace(/['"]/g, '') || '';
+  return filename?.[1]?.replace(/['"]/g, '').trim() || '';
 }
 
 export function extractFilenameFromHeaders(
