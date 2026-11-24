@@ -21,15 +21,20 @@ export function extractFilenameFromContentDisposition(
     return '';
   }
 
-  const encodedFilename = header.match(/filename\*=UTF-8''([^;]+)/);
+  // RFC 5987: filename*=UTF-8'<language>'<percent-encoded value>
+  const encodedFilename = header.match(/filename\*\s*=\s*UTF-8'[^']*'([^;]+)/i);
 
   if (encodedFilename?.[1]) {
-    return decodeURIComponent(encodedFilename[1]);
+    try {
+      return decodeURIComponent(encodedFilename[1].trim());
+    } catch {
+      // Fall through to the ASCII filename= fallback.
+    }
   }
 
-  const filename = header.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
+  const filename = header.match(/filename(?!\*)[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
 
-  return filename?.[1]?.replace(/['"]/g, '') || '';
+  return filename?.[1]?.replace(/['"]/g, '').trim() || '';
 }
 
 export function extractFilenameFromHeaders(
