@@ -9,7 +9,10 @@
  */
 
 import { useQueryClient } from '@tanstack/react-query';
-import { extractFilenameFromHeaders } from '$app/common/helpers/download';
+import {
+  downloadBlob,
+  extractFilenameFromHeaders,
+} from '$app/common/helpers/download';
 import { request } from '$app/common/helpers/request';
 import { toast } from '$app/common/helpers/toast/toast';
 import {
@@ -48,23 +51,10 @@ export function useDownloadEInvoice(props: Props) {
             {},
             { responseType: 'arraybuffer' }
           ).then((response) => {
-            const blob = new Blob([response.data], { type: 'application/xml' });
-            const url = URL.createObjectURL(blob);
-
             const filename =
               extractFilenameFromHeaders(response.headers) || 'invoice.xml';
 
-            const link = document.createElement('a');
-
-            link.download = filename;
-            link.href = url;
-            link.target = '_blank';
-
-            document.body.appendChild(link);
-
-            link.click();
-
-            document.body.removeChild(link);
+            downloadBlob(response.data, filename, 'application/xml');
 
             toast.dismiss();
 
