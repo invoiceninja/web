@@ -53,6 +53,20 @@ describe('extractFilenameFromContentDisposition', () => {
     ).toBe('請求書_0354.pdf');
   });
 
+  test('decodes a filename* with a language tag', () => {
+    expect(
+      extractFilenameFromContentDisposition(
+        "attachment; filename*=UTF-8'en'%E8%AB%8B%E6%B1%82%E6%9B%B8_0354.pdf"
+      )
+    ).toBe('請求書_0354.pdf');
+  });
+
+  test('returns an empty string for malformed percent-encoding', () => {
+    expect(
+      extractFilenameFromContentDisposition("attachment; filename*=utf-8''%E8")
+    ).toBe('');
+  });
+
   test('accepts an array header and uses the first value', () => {
     expect(
       extractFilenameFromHeaders({
