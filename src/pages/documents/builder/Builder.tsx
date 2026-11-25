@@ -33,7 +33,6 @@ import { toast } from '$app/common/helpers/toast/toast';
 import { useCurrentCompanyDateFormats } from '$app/common/hooks/useCurrentCompanyDateFormats';
 import { useDriverTour } from '$app/common/hooks/useDriverTour';
 import { usePreferences } from '$app/common/hooks/usePreferences';
-import { useReactSettings } from '$app/common/hooks/useReactSettings';
 import { $refetch } from '$app/common/hooks/useRefetch';
 import { DocumentStatus } from '$app/common/interfaces/docuninja/api';
 import { Page } from '$app/components/Breadcrumbs';
@@ -113,7 +112,6 @@ function Builder() {
 
   const { id } = useParams();
   const { dateFormat } = useCurrentCompanyDateFormats();
-  const reactSettings = useReactSettings();
   const [searchParams] = useSearchParams();
   const isFromTemplate = searchParams.get('from_template') === 'true';
 
@@ -558,7 +556,7 @@ function Builder() {
           value={{
             token: localStorage.getItem('X-DOCU-NINJA-TOKEN') as string,
             document: id as string,
-            theme: reactSettings?.dark_mode ? darkBuilderTheme : undefined,
+            theme: colors.$0 === 'dark' ? darkBuilderTheme : undefined,
             slots: {
               helper: () => null,
               signatorySelector: SignatorySelector,
