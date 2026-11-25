@@ -124,6 +124,7 @@ export function Preferences() {
       <Element leftSide={t('dark_mode')}>
         <Toggle
           checked={Boolean(reactSettings?.dark_mode)}
+          disabled={Boolean(reactSettings?.follow_device_theme)}
           onChange={(value) =>
             handleChange('company_user.react_settings.dark_mode', value)
           }
