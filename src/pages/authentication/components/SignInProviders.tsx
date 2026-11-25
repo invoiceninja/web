@@ -21,7 +21,6 @@ import { useSearchParams } from 'react-router-dom';
 import { v4 } from 'uuid';
 import { AuthenticationTypes } from '$app/common/dtos/authentication';
 import { endpoint } from '$app/common/helpers';
-import { buildAttribution } from '../common/attribution';
 import { clearTabCompany } from '$app/common/helpers/company-session';
 import { request } from '$app/common/helpers/request';
 import { toast } from '$app/common/helpers/toast/toast';
@@ -75,7 +74,7 @@ export function SignInProviders() {
   const queryClient = useQueryClient();
 
   const [searchParams] = useSearchParams();
-  const attribution = buildAttribution(searchParams);
+  const attribution = Object.fromEntries(searchParams);
 
   const login = (response: AxiosResponse) => {
     clearTabCompany();
