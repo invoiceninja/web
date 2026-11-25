@@ -18,7 +18,10 @@ import { request } from '$app/common/helpers/request';
 import { toast } from '$app/common/helpers/toast/toast';
 import { useCurrentCompany } from '$app/common/hooks/useCurrentCompany';
 import { updateRecord } from '$app/common/stores/slices/company-users';
-import { InvoiceItem } from '$app/common/interfaces/invoice-item';
+import {
+  InvoiceItem,
+  InvoiceItemType,
+} from '$app/common/interfaces/invoice-item';
 import { TaxRate } from '$app/common/interfaces/tax-rate';
 import { Product } from '$app/common/interfaces/product';
 import { useEffect, useState } from 'react';
@@ -27,6 +30,7 @@ import { useDispatch } from 'react-redux';
 import { Button, InputLabel } from '$app/components/forms';
 import { NumberInputField } from '$app/components/forms/NumberInputField';
 import { HiddenResourceTaxesAlert } from '$app/components/HiddenResourceTaxesAlert';
+import { LineItemTagsSelector } from '$app/components/tags/LineItemTagsSelector';
 import { ClientContactModal } from './ClientContactModal';
 import { StepFooter } from './StepFooter';
 import { StepTransition } from './StepTransition';
@@ -55,6 +59,12 @@ interface Props {
 type TaxTarget =
   | { scope: 'invoice' }
   | { scope: 'item'; index: number; slot: TaxSlot };
+
+const ITEM_CONTENT_FIELDS = ['notes', 'product_key', 'cost', 'tags'] as const;
+
+const isBlankItem = (item: InvoiceItem) => {
+  return ITEM_CONTENT_FIELDS.every((field) => !item[field]);
+};
 
 export function StepItems({ wizard, embedded }: Props) {
   const reactSettings = useReactSettings();
@@ -85,6 +95,11 @@ export function StepItems({ wizard, embedded }: Props) {
   const taxSlotCount = Math.max(1, enabledTaxSlots);
   const taxesConfigured =
     enabledTaxSlots > 0 || (company?.enabled_tax_rates ?? 0) > 0;
+
+  const pdfVariables = company?.settings.pdf_variables;
+  const hasProductTagsColumn =
+    pdfVariables?.product_columns?.includes('$product.tags');
+  const hasTaskTagsColumn = pdfVariables?.task_columns?.includes('$task.tags');
 
   useEffect(() => {
     request(
@@ -281,6 +296,10 @@ export function StepItems({ wizard, embedded }: Props) {
       <div className="space-y-5">
         {items.map((item, index) => {
           const key = item._id ?? String(index);
+          const withTags =
+            item.type_id === InvoiceItemType.Task
+              ? hasTaskTagsColumn
+              : hasProductTagsColumn;
 
           return (
             <div
@@ -305,6 +324,16 @@ export function StepItems({ wizard, embedded }: Props) {
                   wizard.errors?.errors[`line_items.${index}.notes`]
                 }
               />
+
+              {withTags ? (
+                <div className="mt-3">
+                  <LineItemTagsSelector
+                    layout="row"
+                    value={item.tags}
+                    onChange={(value) => update(index, { tags: value })}
+                  />
+                </div>
+              ) : null}
 
               <div className="mt-3 flex items-end gap-3">
                 <div className="flex-1 min-w-0">
@@ -532,10 +561,7 @@ export function StepItems({ wizard, embedded }: Props) {
         exclude={usedWork}
         onClose={() => setPicker(null)}
         onPick={(item) => {
-          const blankIndex = items.findIndex(
-            (existing) =>
-              !existing.notes && !existing.product_key && !existing.cost
-          );
+          const blankIndex = items.findIndex(isBlankItem);
 
           if (item.tax_name1 || item.tax_name2 || item.tax_name3) {
             ensureTaxSlot();
