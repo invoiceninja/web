@@ -9,7 +9,7 @@
  */
 
 import dayjs from 'dayjs';
-import { atom, useSetAtom } from 'jotai';
+import { atom, useAtomValue, useSetAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
@@ -19,7 +19,12 @@ import { useCurrentCompany } from '$app/common/hooks/useCurrentCompany';
 import { useResolveLanguage } from '$app/common/hooks/useResolveLanguage';
 import { Account } from '$app/common/interfaces/account';
 import { isPasswordRequiredAtom } from './common/atoms/password-confirmation';
-import { systemPrefersDarkAtom, useColorScheme } from './common/colors';
+import {
+  systemPrefersDarkAtom,
+  THEME_KEY,
+  themeAtom,
+  useColorScheme,
+} from './common/colors';
 import { toast } from './common/helpers/toast/toast';
 import {
   useAdmin,
@@ -76,6 +81,7 @@ export function App() {
   const dispatch = useDispatch();
   const darkMode = useSelector((state: RootState) => state.settings.darkMode);
   const colors = useColorScheme();
+  const theme = useAtomValue(themeAtom);
   const setSystemPrefersDark = useSetAtom(systemPrefersDarkAtom);
 
   const navigate = useNavigate();
@@ -152,6 +158,12 @@ export function App() {
 
     return () => media.removeEventListener('change', sync);
   }, [setSystemPrefersDark]);
+
+  useEffect(() => {
+    if (theme) {
+      localStorage.setItem(THEME_KEY, theme);
+    }
+  }, [theme]);
 
   useEffect(() => {
     if (reactSettings) {

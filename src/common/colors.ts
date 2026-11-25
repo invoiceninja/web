@@ -9,7 +9,8 @@
  */
 
 import { atom, useAtomValue } from 'jotai';
-import { useReactSettingsField } from './hooks/useReactSettings';
+import { atomWithLazy } from 'jotai/utils';
+import { reactSettingsAtom } from './hooks/useReactSettings';
 
 // export const $1 = {
 //   name: 'invoiceninja.dark',
@@ -87,14 +88,32 @@ export const lightColorScheme = {
   $26: '#3F3F46', // Border on dark surfaces (sidebar)
 };
 
-export const systemPrefersDarkAtom = atom(false);
+export const systemPrefersDarkAtom = atomWithLazy(
+  () => window.matchMedia('(prefers-color-scheme: dark)').matches
+);
+
+export const THEME_KEY = 'X-THEME';
+
+export const themeAtom = atom((get) => {
+  const settings = get(reactSettingsAtom);
+
+  // Settings load after the first paint, the remembered theme avoids a flash.
+  if (!settings) {
+    return localStorage.getItem(THEME_KEY);
+  }
+
+  if (settings.follow_device_theme) {
+    return 'device';
+  }
+
+  return settings.dark_mode ? 'dark' : 'light';
+});
 
 export function useColorScheme() {
-  const darkMode = useReactSettingsField('dark_mode');
-  const followDeviceTheme = useReactSettingsField('follow_device_theme');
+  const theme = useAtomValue(themeAtom);
   const systemPrefersDark = useAtomValue(systemPrefersDarkAtom);
 
-  return (followDeviceTheme ? systemPrefersDark : darkMode)
+  return theme === 'dark' || (theme === 'device' && systemPrefersDark)
     ? darkColorScheme
     : lightColorScheme;
 }
