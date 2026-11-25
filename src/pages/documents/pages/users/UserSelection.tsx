@@ -174,7 +174,7 @@ export default function UserSelection() {
     } catch (error: any) {
       console.error('Error granting DocuNinja access:', error);
       toast.error(
-        error.response?.message ??
+        error.response?.message ?? error.response?.data?.message ??
           (t('docuninja_access_grant_failed') as string)
       );
     } finally {
