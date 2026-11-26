@@ -168,7 +168,7 @@ export function useInvoiceUtilities(props: Props) {
   };
 
   const handleDeleteLineItem = (index: number) => {
-    const lineItems = invoice?.line_items || [];
+    const lineItems = [...(invoice?.line_items || [])];
 
     lineItems.splice(index, 1);
 

@@ -183,7 +183,7 @@ export function useRecurringInvoiceUtilities(
   };
 
   const handleDeleteLineItem = (index: number) => {
-    const lineItems = recurringInvoice?.line_items || [];
+    const lineItems = [...(recurringInvoice?.line_items || [])];
 
     lineItems.splice(index, 1);
 
