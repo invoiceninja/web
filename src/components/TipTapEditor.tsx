@@ -1102,6 +1102,11 @@ export function TipTapEditor({
           levels: [1, 2, 3, 4],
         },
         paragraph: false,
+        // StarterKit v3 bundles these; they are registered explicitly below.
+        link: false,
+        underline: false,
+        strike: false,
+        hardBreak: false,
       }),
       CustomParagraph,
       Placeholder.configure({

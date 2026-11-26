@@ -149,7 +149,7 @@ export function useCreditUtilities(props: CreditUtilitiesProps) {
   };
 
   const handleLineItemChange = (index: number, lineItem: InvoiceItem) => {
-    const lineItems = credit?.line_items || [];
+    const lineItems = [...(credit?.line_items || [])];
 
     lineItems[index] = lineItem;
 
@@ -161,14 +161,13 @@ export function useCreditUtilities(props: CreditUtilitiesProps) {
     value: unknown,
     index: number
   ) => {
-    const lineItems = credit?.line_items || [];
+    const lineItems = [...(credit?.line_items || [])];
 
     if (lineItems[index][key] === value) {
       return;
     }
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    lineItems[index][key] = value;
+
+    lineItems[index] = { ...lineItems[index], [key]: value };
 
     setCredit((current) => current && { ...current, line_items: lineItems });
   };
@@ -191,7 +190,7 @@ export function useCreditUtilities(props: CreditUtilitiesProps) {
   };
 
   const handleDeleteLineItem = (index: number) => {
-    const lineItems = credit?.line_items || [];
+    const lineItems = [...(credit?.line_items || [])];
 
     lineItems.splice(index, 1);
 

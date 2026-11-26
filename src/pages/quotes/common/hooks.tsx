@@ -233,7 +233,7 @@ export function useQuoteUtilities(props: QuoteUtilitiesProps) {
   };
 
   const handleDeleteLineItem = (index: number) => {
-    const lineItems = quote?.line_items || [];
+    const lineItems = [...(quote?.line_items || [])];
 
     lineItems.splice(index, 1);
 
