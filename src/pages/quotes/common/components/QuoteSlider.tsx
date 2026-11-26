@@ -18,7 +18,7 @@ import { Slider } from '$app/components/cards/Slider';
 import { atom, useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { useCurrentCompanyDateFormats } from '$app/common/hooks/useCurrentCompanyDateFormats';
-import { date, endpoint, trans } from '$app/common/helpers';
+import { date, endpoint, useTrans } from '$app/common/helpers';
 import { ResourceActions } from '$app/components/ResourceActions';
 import { toast } from '$app/common/helpers/toast/toast';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -91,6 +91,7 @@ const Box = styled.div`
 `;
 
 export function useGenerateActivityElement() {
+  const trans = useTrans();
   const [t] = useTranslation();
 
   const hasPermission = useHasPermission();

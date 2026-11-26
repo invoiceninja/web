@@ -12,7 +12,7 @@ import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import { endpoint, trans } from '$app/common/helpers';
+import { endpoint, useTrans } from '$app/common/helpers';
 import { request } from '$app/common/helpers/request';
 import { toast } from '$app/common/helpers/toast/toast';
 import { useCurrentCompany } from '$app/common/hooks/useCurrentCompany';
@@ -26,6 +26,7 @@ import { Modal } from '$app/components/Modal';
 import { connectMailerAtom } from '../../components';
 
 export function SelectProviderModal() {
+  const trans = useTrans();
   const [t] = useTranslation();
   const dispatch = useDispatch();
 

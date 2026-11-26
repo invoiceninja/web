@@ -11,7 +11,7 @@
 import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { useColorScheme } from '$app/common/colors';
-import { trans } from '$app/common/helpers';
+import { useTrans } from '$app/common/helpers';
 import { useFormatMoney } from '$app/common/hooks/money/useFormatMoney';
 import { Invoice } from '$app/common/interfaces/invoice';
 import { Task } from '$app/common/interfaces/task';
@@ -32,6 +32,7 @@ const Div = styled.div`
 `;
 
 export function AddTasksOnInvoiceModal(props: Props) {
+  const trans = useTrans();
   const { visible, setVisible, tasks, invoices } = props;
 
   const colors = useColorScheme();

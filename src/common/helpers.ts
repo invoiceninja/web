@@ -11,6 +11,7 @@
 import { AxiosRequestHeaders, AxiosResponse, Method } from 'axios';
 import dayjs from 'dayjs';
 import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 import { route } from '$app/common/helpers/route';
 import entityState from './constants/entity-state';
 import { request } from './helpers/request';
@@ -107,8 +108,12 @@ export function getEntityState(entity: any) {
   }
 }
 
-export function trans(key: string, replace: Record<string, unknown>) {
-  let translation = t(key);
+export function trans(
+  key: string,
+  replace: Record<string, unknown>,
+  translate: (key: string) => string = t
+) {
+  let translation = translate(key);
 
   for (const placeholder in replace) {
     translation = translation.replace(
@@ -118,6 +123,12 @@ export function trans(key: string, replace: Record<string, unknown>) {
   }
 
   return translation;
+}
+
+export function useTrans() {
+  const [translate] = useTranslation();
+  return (key: string, replace: Record<string, unknown>) =>
+    trans(key, replace, translate);
 }
 
 export function previewEndpoint(endpoint: string, params = {}): string {

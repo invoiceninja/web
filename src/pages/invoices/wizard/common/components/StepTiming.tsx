@@ -8,7 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { endpoint, trans } from '$app/common/helpers';
+import { endpoint, useTrans } from '$app/common/helpers';
 import { useAccentColor } from '$app/common/hooks/useAccentColor';
 import { useColorScheme } from '$app/common/colors';
 import { request } from '$app/common/helpers/request';
@@ -59,6 +59,7 @@ const termFromDates = (
 };
 
 export function StepTiming({ wizard, embedded }: Props) {
+  const trans = useTrans();
   const accentColor = useAccentColor();
   const colors = useColorScheme();
   const [t] = useTranslation();

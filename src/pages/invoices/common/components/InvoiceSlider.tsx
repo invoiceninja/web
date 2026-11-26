@@ -22,7 +22,7 @@ import {
   openClientPortal,
 } from '../helpers/open-client-portal';
 import { useCurrentCompanyDateFormats } from '$app/common/hooks/useCurrentCompanyDateFormats';
-import { date, endpoint, trans } from '$app/common/helpers';
+import { date, endpoint, useTrans } from '$app/common/helpers';
 import { ResourceActions } from '$app/components/ResourceActions';
 import { useActions } from '../../edit/components/Actions';
 import { toast } from '$app/common/helpers/toast/toast';
@@ -108,6 +108,7 @@ const ActivityBox = styled.div`
 `;
 
 export function useGenerateActivityElement() {
+  const trans = useTrans();
   const invoicePaths = useInvoiceEditorPaths();
   const [t] = useTranslation();
 

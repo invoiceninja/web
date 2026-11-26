@@ -12,7 +12,7 @@ import classNames from 'classnames';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useColorScheme } from '$app/common/colors';
-import { endpoint, trans } from '$app/common/helpers';
+import { endpoint, useTrans } from '$app/common/helpers';
 import { useHasPermission } from '$app/common/hooks/permissions/useHasPermission';
 import { useCurrentCompany } from '$app/common/hooks/useCurrentCompany';
 import { Product } from '$app/common/interfaces/product';
@@ -40,6 +40,7 @@ interface Props {
 }
 
 export function ProductSelector(props: Props) {
+  const trans = useTrans();
   const [t] = useTranslation();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);

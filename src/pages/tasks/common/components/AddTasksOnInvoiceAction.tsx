@@ -13,7 +13,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MdAddCircleOutline } from 'react-icons/md';
 import { useColorScheme } from '$app/common/colors';
-import { endpoint, trans } from '$app/common/helpers';
+import { endpoint, useTrans } from '$app/common/helpers';
 import { request } from '$app/common/helpers/request';
 import { toast } from '$app/common/helpers/toast/toast';
 import { useHasPermission } from '$app/common/hooks/permissions/useHasPermission';
@@ -34,6 +34,7 @@ interface Props {
 }
 
 export function AddTasksOnInvoiceAction({ tasks, isBulkAction }: Props) {
+  const trans = useTrans();
   const [t] = useTranslation();
 
   const colors = useColorScheme();

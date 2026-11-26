@@ -13,7 +13,7 @@ import {
   apiEndpoint,
   endpoint,
   isSelfHosted,
-  trans,
+  useTrans,
 } from '$app/common/helpers';
 import { request } from '$app/common/helpers/request';
 import { SignInProviderButton } from './SignInProviders';
@@ -34,6 +34,7 @@ interface OidcConfig {
  * authorization code flow.
  */
 export function OidcSignIn() {
+  const trans = useTrans();
   // Generic OIDC only makes sense for self-hosted deployments — the hosted
   // platform has its own SSO story, so skip the discovery request entirely
   // there. skipIntercept + no retry: older self-hosted backends don't ship

@@ -13,7 +13,7 @@ import { ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useColorScheme } from '$app/common/colors';
-import { trans } from '$app/common/helpers';
+import { useTrans } from '$app/common/helpers';
 import { useCompanyChanges } from '$app/common/hooks/useCompanyChanges';
 import { useCurrentSettingsLevel } from '$app/common/hooks/useCurrentSettingsLevel';
 import { useDisableSettingsField } from '$app/common/hooks/useDisableSettingsField';
@@ -38,6 +38,7 @@ import {
 import { useHandleCurrentCompanyChangeProperty } from '../common/hooks/useHandleCurrentCompanyChange';
 
 export function TaskSettings() {
+  const trans = useTrans();
   useTitle('task_settings');
   const [t] = useTranslation();
 

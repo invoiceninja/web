@@ -11,13 +11,14 @@
 import { useTranslation } from 'react-i18next';
 import { enterprisePlan } from '$app/common/guards/guards/enterprise-plan';
 import { proPlan } from '$app/common/guards/guards/pro-plan';
-import { trans } from '$app/common/helpers';
+import { useTrans } from '$app/common/helpers';
 import { route } from '$app/common/helpers/route';
 import { useAdmin } from '$app/common/hooks/permissions/useHasPermission';
 import { useCurrentUser } from '$app/common/hooks/useCurrentUser';
 import { Link } from './forms';
 
 export function RemoveLogoCTA() {
+  const trans = useTrans();
   const [t] = useTranslation();
   const user = useCurrentUser();
 
