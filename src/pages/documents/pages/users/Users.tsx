@@ -8,9 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
-import { docuNinjaAtom } from '$app/common/atoms/docuninja';
 import { useCurrentCompany } from '$app/common/hooks/useCurrentCompany';
 import { useDocuNinjaActions } from '$app/common/hooks/useDocuNinjaActions';
 import { $refetch } from '$app/common/hooks/useRefetch';
@@ -29,14 +27,7 @@ export default function Users() {
 
   const columns = useUserColumns();
   const company = useCurrentCompany();
-  // Get DocuNinja data from unified atoms (NO QUERY!)
-  const [docuData] = useAtom(docuNinjaAtom);
-  const docuAccount = docuData?.account;
   const { getToken } = useDocuNinjaActions();
-
-  const currentUserCount = docuData?.account?.users?.length || 1;
-  // const currentUserCount = docuNinjaUsersData?.data?.meta?.total || 0;
-  const maxUsers = docuAccount?.num_users || 0;
 
   const pages = [
     {
@@ -74,7 +65,6 @@ export default function Users() {
         }}
         totalPagesPropPath="data.meta.last_page"
         totalRecordsPropPath="data.meta.total"
-        disabledCreateButton={currentUserCount >= maxUsers}
         filterParameterKey="search"
       />
     </Default>
