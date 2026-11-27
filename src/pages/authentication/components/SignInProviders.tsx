@@ -17,6 +17,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { AxiosResponse } from 'axios';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import { v4 } from 'uuid';
 import { AuthenticationTypes } from '$app/common/dtos/authentication';
 import { endpoint } from '$app/common/helpers';
@@ -72,6 +73,9 @@ export function SignInProviders() {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
 
+  const [searchParams] = useSearchParams();
+  const attribution = Object.fromEntries(searchParams);
+
   const login = (response: AxiosResponse) => {
     clearTabCompany();
     localStorage.removeItem('X-CURRENT-INDEX');
@@ -112,19 +116,22 @@ export function SignInProviders() {
         {
           token,
         }
-      )
+      ),
+      { attribution }
     ).then((response) => login(response));
   };
 
   const handleApple = (response: any) => {
     request('POST', endpoint('/api/v1/oauth_login?provider=apple'), {
       id_token: response.authorization.id_token,
+      attribution,
     }).then((response) => login(response));
   };
 
   const handleMicrosoft = (token: string) => {
     request('POST', endpoint('/api/v1/oauth_login?provider=microsoft'), {
       accessToken: token,
+      attribution,
     }).then((response) => login(response));
   };
 

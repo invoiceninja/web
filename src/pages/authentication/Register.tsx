@@ -97,17 +97,11 @@ export function Register() {
       apiEndpoint()
     );
 
-    [
-      'utm_source',
-      'utm_medium',
-      'utm_campaign',
-      'utm_content',
-      'utm_term',
-    ].forEach((key) => {
-      if (searchParams.has(key)) {
-        endpoint.searchParams.append(key, searchParams.get(key) as string);
-      }
-    });
+    const attribution = Object.fromEntries(searchParams);
+
+    if (Object.keys(attribution).length > 0) {
+      values.attribution = attribution;
+    }
 
     const rc = searchParams.get('rc');
 
