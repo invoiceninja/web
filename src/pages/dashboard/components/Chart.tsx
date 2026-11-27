@@ -307,7 +307,11 @@ export function Chart(props: Props) {
           strokeWidth={2}
         />
 
-        <CartesianGrid strokeDasharray="0" vertical={false} />
+        <CartesianGrid
+          strokeDasharray="0"
+          vertical={false}
+          stroke={colors.$24}
+        />
         <Tooltip
           content={<CustomTooltip />}
           wrapperStyle={{ outline: 'none' }}

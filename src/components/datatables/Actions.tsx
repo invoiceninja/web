@@ -237,13 +237,14 @@ export function SelectWithApplyButton(props: any) {
           <div className="flex w-full px-3 space-x-2">
             <ResetButton
               className={classNames('w-1/2 rounded-md text-sm font-medium', {
-                border: reactSettings?.dark_mode,
+                border: colors.$0 === 'dark',
               })}
               type="button"
               onClick={handleReset}
               theme={{
                 textColor: colors.$3,
-                backgroundColor: '#09090B1A',
+                backgroundColor: colors.$15,
+                borderColor: colors.$24,
               }}
             >
               {t('reset')}
@@ -260,7 +261,7 @@ export function SelectWithApplyButton(props: any) {
         </div>
       </components.Menu>
     );
-  }, [colors.$3, onChange, reactSettings?.dark_mode, t]);
+  }, [colors.$3, onChange, colors.$0 === 'dark', t]);
   
   const handleChange = (newValue: any) => {
     setTempValue(newValue);
@@ -362,20 +363,21 @@ export function Actions(props: Props) {
     }),
     placeholder: (base) => ({
       ...base,
-      color: '#6b7280',
+      color: colors.$22,
     }),
     indicatorSeparator: () => ({
       display: 'none',
     }),
     dropdownIndicator: (base) => ({
       ...base,
-      color: '#6b7280',
+      color: colors.$16,
       padding: '0 8px',
     }),
     menu: (base) => ({
       ...base,
       backgroundColor: colors.$1,
-      border: `1px solid ${colors.$19}`,
+      border: `1px solid ${colors.$24}`,
+      borderRadius: '0.375rem',
       zIndex: 10,
       width: '16rem',
       boxShadow: 'none',

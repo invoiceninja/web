@@ -8,7 +8,9 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { useReactSettingsField } from './hooks/useReactSettings';
+import { atom, useAtomValue } from 'jotai';
+import { atomWithLazy } from 'jotai/utils';
+import { reactSettingsAtom } from './hooks/useReactSettings';
 
 // export const $1 = {
 //   name: 'invoiceninja.dark',
@@ -27,31 +29,32 @@ import { useReactSettingsField } from './hooks/useReactSettings';
 export const darkColorScheme = {
   name: 'invoiceninja.dark',
   $0: 'dark',
-  $1: '#121212',
-  $2: '#121212',
+  $1: '#131316', // Primary surface (cards, inputs, modals, navbar)
+  $2: '#202024', // Secondary surface (nested panels)
   $3: 'rgba(255, 255, 255, 0.87)',
-  $4: '#1f2e41',
-  $5: '#1f2e41',
-  $6: '#121212',
-  $7: '#151f2c',
-  $8: '#1f2e41',
+  $4: '#34343C', // Primary border / hover
+  $5: '#3A3A42', // Secondary border
+  $6: '#202024', // Secondary background
+  $7: '#26262C', // Primary hover
+  $8: '#2F2F36', // Secondary hover / active
   $9: '#ffffff',
   $10: 0.87, // High emphasis text
   $11: 0.6, // Medium emphasis text
   $12: 0.38, // Disabled text
   $13: '#E5E7EB', // Navbar right icon hover
-  $14: '#121212', // Navigation bar background color
-  $15: '#323236', // Light gray background
+  $14: '#131316', // Navigation bar background color
+  $15: '#222226', // Light gray background
   $16: '#A1A1AA', // Dark gray icon
   $17: '#9D9DA8', // Placeholder text, table header text color
-  $18: '#FFFFFF', // Button background color
-  $19: '#323236', // Light border color
-  $20: '#323236', // Dropdown element hover background color
-  $21: '#1f2e41', // Divider color
-  $22: '#a1a1aa', // Label color
-  $23: '#121212', // Content background color
-  $24: '#323236', // Border color
-  $25: '#1f2e41', // Hover element background color
+  $18: '#E4E4E7', // Button background color
+  $19: '#3F3F46', // Light border color
+  $20: '#26262C', // Dropdown element hover background color
+  $21: '#2E2E34', // Divider color
+  $22: '#A1A1AA', // Label color
+  $23: '#0B0B0D', // Content background color
+  $24: '#2E2E34', // Border color
+  $25: '#26262C', // Hover element background color
+  $26: '#3F3F46', // Border on dark surfaces (sidebar)
 };
 
 export const lightColorScheme = {
@@ -82,10 +85,35 @@ export const lightColorScheme = {
   $23: '#F4F4F5', // Content background color
   $24: '#09090B26', // Border color
   $25: '#09090B0D', // Hover element background color
+  $26: '#3F3F46', // Border on dark surfaces (sidebar)
 };
 
-export function useColorScheme() {
-  const darkMode = useReactSettingsField('dark_mode');
+export const systemPrefersDarkAtom = atomWithLazy(
+  () => window.matchMedia('(prefers-color-scheme: dark)').matches
+);
 
-  return darkMode ? darkColorScheme : lightColorScheme;
+export const THEME_KEY = 'X-THEME';
+
+export const themeAtom = atom((get) => {
+  const settings = get(reactSettingsAtom);
+
+  // Settings load after the first paint, the remembered theme avoids a flash.
+  if (!settings) {
+    return localStorage.getItem(THEME_KEY);
+  }
+
+  if (settings.follow_device_theme) {
+    return 'device';
+  }
+
+  return settings.dark_mode ? 'dark' : 'light';
+});
+
+export function useColorScheme() {
+  const theme = useAtomValue(themeAtom);
+  const systemPrefersDark = useAtomValue(systemPrefersDarkAtom);
+
+  return theme === 'dark' || (theme === 'device' && systemPrefersDark)
+    ? darkColorScheme
+    : lightColorScheme;
 }

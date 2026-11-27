@@ -741,7 +741,7 @@ export function UploadCompanyImport(props: Props) {
       {/* Add progress bar when uploading large files */}
       {uploadProgress > 0 && uploadProgress < 100 && (
         <div className="w-full px-4 sm:px-6 mt-4 pb-4">
-          <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+          <div className="w-full bg-gray-200 rounded-full h-2.5">
             <div
               className="bg-blue-600 h-2.5 rounded-full"
               style={{ width: `${uploadProgress}%` }}

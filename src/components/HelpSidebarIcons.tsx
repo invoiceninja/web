@@ -35,7 +35,10 @@ import { useCurrentAccount } from '$app/common/hooks/useCurrentAccount';
 import { useCurrentUser } from '$app/common/hooks/useCurrentUser';
 import { useHandleCollapseExpandSidebar } from '$app/common/hooks/useHandleCollapseExpandSidebar';
 import { useHandleDarkLightMode } from '$app/common/hooks/useHandleDarkLightMode';
-import { useReactSettings } from '$app/common/hooks/useReactSettings';
+import {
+  useReactSettings,
+  useSaveReactSettings,
+} from '$app/common/hooks/useReactSettings';
 import { ValidationBag } from '$app/common/interfaces/validation-bag';
 import {
   resetChanges,
@@ -76,6 +79,7 @@ export function HelpSidebarIcons(props: Props) {
 
   const dispatch = useDispatch();
   const handleDarkLightMode = useHandleDarkLightMode();
+  const saveReactSettings = useSaveReactSettings();
   const handleCollapseExpandSidebar = useHandleCollapseExpandSidebar();
 
   const { data: latestVersion } = useQuery({
@@ -364,11 +368,12 @@ export function HelpSidebarIcons(props: Props) {
       />
 
       <nav
-        style={{ borderColor: colors.$5 }}
+        style={{ borderColor: colors.$26 }}
         className={classNames('flex space-x-2.5 py-4 text-white border-t', {
           'justify-end': mobileNavbar,
           'justify-around': !mobileNavbar,
           'px-2': !isUpdateAvailable,
+          '-mx-3': !mobileNavbar,
         })}
       >
         {!isMiniSidebar && !mobileNavbar && (
@@ -488,9 +493,15 @@ export function HelpSidebarIcons(props: Props) {
             >
               <div
                 className="cursor-pointer"
-                onClick={() => handleDarkLightMode(!reactSettings?.dark_mode)}
+                onClick={() => {
+                  if (reactSettings?.follow_device_theme) {
+                    saveReactSettings('follow_device_theme', false);
+                  }
+
+                  handleDarkLightMode(colors.$0 !== 'dark');
+                }}
               >
-                {reactSettings?.dark_mode ? (
+                {colors.$0 === 'dark' ? (
                   <Sun color="white" size="1.3rem" />
                 ) : (
                   <MoonStars color="white" size="1.3rem" />

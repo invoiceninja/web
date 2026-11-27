@@ -124,8 +124,24 @@ export function Preferences() {
       <Element leftSide={t('dark_mode')}>
         <Toggle
           checked={Boolean(reactSettings?.dark_mode)}
+          disabled={Boolean(reactSettings?.follow_device_theme)}
           onChange={(value) =>
             handleChange('company_user.react_settings.dark_mode', value)
+          }
+        />
+      </Element>
+
+      <Element
+        leftSide={t('follow_device_theme')}
+        leftSideHelp={t('follow_device_theme_help')}
+      >
+        <Toggle
+          checked={Boolean(reactSettings?.follow_device_theme)}
+          onChange={(value) =>
+            handleChange(
+              'company_user.react_settings.follow_device_theme',
+              value
+            )
           }
         />
       </Element>

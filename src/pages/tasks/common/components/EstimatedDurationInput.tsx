@@ -98,8 +98,8 @@ export function EstimatedDurationInput(props: Props) {
           className={classNames(
             'flex-1 min-w-0 py-2 px-3 rounded-md text-sm border disabled:opacity-75 disabled:cursor-not-allowed focus:outline-none focus:ring-0',
             {
-              'border-[#09090B26] focus:border-black': !reactSettings.dark_mode,
-              'border-[#1f2e41] focus:border-white': reactSettings.dark_mode,
+              'border-[#09090B26] focus:border-black': colors.$0 === 'light',
+              'border-[#2E2E34] focus:border-white': colors.$0 === 'dark',
             }
           )}
           style={{

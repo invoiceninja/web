@@ -46,6 +46,7 @@ import { normalizeColumnName } from '$app/common/helpers/data-table';
 import { TagPills } from '$app/components/tags/TagPills';
 import { PeppolSendingStatus } from '$app/components/e-invoice/PeppolSendingStatus';
 import { calculateNetAmount } from '$app/common/helpers/invoices/net-amount';
+import { useColorScheme } from '$app/common/colors';
 
 export type DataTableColumnsExtended<TResource = any, TColumn = string> = {
   column: TColumn;
@@ -136,6 +137,7 @@ export function useAllInvoiceColumns() {
 }
 
 export function useInvoiceColumns(): DataTableColumns<Invoice> {
+  const colors = useColorScheme();
   const invoicePaths = useInvoiceEditorPaths();
   const invoiceColumns = useAllInvoiceColumns();
   type InvoiceColumns = (typeof invoiceColumns)[number];
@@ -522,7 +524,7 @@ export function useInvoiceColumns(): DataTableColumns<Invoice> {
             <div className="w-full max-h-48 overflow-auto whitespace-normal break-all">
               <article
                 className={classNames('prose prose-sm', {
-                  'prose-invert': !reactSettings?.dark_mode,
+                  'prose-invert': colors.$0 === 'light',
                 })}
                 dangerouslySetInnerHTML={{
                   __html: sanitizeHTML(value as string),
@@ -548,7 +550,7 @@ export function useInvoiceColumns(): DataTableColumns<Invoice> {
             <div className="w-full max-h-48 overflow-auto whitespace-normal break-all">
               <article
                 className={classNames('prose prose-sm', {
-                  'prose-invert': !reactSettings?.dark_mode,
+                  'prose-invert': colors.$0 === 'light',
                 })}
                 dangerouslySetInnerHTML={{
                   __html: sanitizeHTML(value as string),

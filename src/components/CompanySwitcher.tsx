@@ -182,7 +182,7 @@ export function CompanySwitcher() {
               WebkitBackdropFilter: 'blur(16px)',
               color: colors.$3,
               borderColor: colors.$24,
-              borderRadius: '0.85rem',
+              borderRadius: '0.75rem',
               boxShadow:
                 '0 16px 40px -12px rgba(0, 0, 0, 0.4), 0 6px 16px -8px rgba(0, 0, 0, 0.3)',
               width: '20rem',
@@ -208,7 +208,7 @@ export function CompanySwitcher() {
               </p>
 
               <div
-                className="flex flex-col gap-1 p-1.5 overflow-y-auto"
+                className="flex flex-col gap-1 p-2 overflow-y-auto"
                 style={{ maxHeight: '21rem' }}
               >
                 {state?.api?.length >= 1 &&
@@ -221,7 +221,7 @@ export function CompanySwitcher() {
                     return (
                       <SwitcherDiv
                         key={index}
-                        className="flex items-center justify-between px-2 rounded-lg cursor-pointer"
+                        className="flex items-center justify-between px-3 rounded-lg cursor-pointer"
                         theme={{ hoverColor: colors.$20 }}
                         style={{
                           height: COMPANY_ROW_HEIGHT,
@@ -274,7 +274,7 @@ export function CompanySwitcher() {
               </div>
             </div>
 
-            <div className="flex flex-col gap-1 p-1.5">
+            <div className="flex flex-col gap-1 p-2">
               {shouldShowAddCompany && canUserAddCompany && isOwner && (
                 <SwitcherDiv
                   className="flex items-center space-x-3 px-3 rounded-lg cursor-pointer"

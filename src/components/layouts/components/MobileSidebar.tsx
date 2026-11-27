@@ -84,8 +84,12 @@ export function MobileSidebar(props: Props) {
             </Transition.Child>
 
             <div
-              className="flex-shrink-0 flex items-center px-0 md:px-4 py-3 border-b h-16 justify-center border-gray-600"
-              style={{ backgroundColor: colors.$14, color: colors.$3 }}
+              className="flex-shrink-0 flex items-center px-0 md:px-4 py-3 border-b h-16 justify-center"
+              style={{
+                backgroundColor: colors.$14,
+                color: colors.$3,
+                borderColor: colors.$26,
+              }}
             >
               <CompanySwitcher />
             </div>
