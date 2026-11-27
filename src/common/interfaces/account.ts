@@ -46,4 +46,6 @@ export interface Account {
   can_trial: boolean;
   docuninja_num_users: number;
   is_premium: boolean;
+  nordigen_enabled: boolean;
+  enablebanking_enabled: boolean;
 }
