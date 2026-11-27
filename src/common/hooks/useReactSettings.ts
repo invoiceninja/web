@@ -109,6 +109,7 @@ export interface ReactSettings {
   dark_mode?: boolean;
   follow_device_theme?: boolean;
   color_theme?: ColorTheme;
+  accent_color?: string;
   client_show_cards?: ClientShowCard[];
   dashboard_fields?: string[];
   hidden_dashboard_cards?: string[];
@@ -485,6 +486,14 @@ export function useFetchReactSettings(): void {
     const hydrated: ReactSettings = { ...serverSettings };
     if (Object.keys(mergedTableColumns).length > 0) {
       hydrated.react_table_columns = mergedTableColumns;
+    }
+
+    const legacyAccentColor = (
+      user.company_user?.settings as { accent_color?: string } | undefined
+    )?.accent_color;
+
+    if (serverSettings.accent_color === undefined && legacyAccentColor) {
+      hydrated.accent_color = legacyAccentColor;
     }
 
     setSettings(hydrated);
