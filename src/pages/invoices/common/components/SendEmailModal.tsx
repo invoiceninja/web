@@ -12,7 +12,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { useColorScheme } from '$app/common/colors';
-import { trans } from '$app/common/helpers';
+import { useTrans } from '$app/common/helpers';
 import { useCurrentCompany } from '$app/common/hooks/useCurrentCompany';
 import { useBulk } from '$app/common/queries/invoices';
 import { Modal } from '$app/components/Modal';
@@ -81,6 +81,7 @@ const Div = styled.div`
 `;
 
 export function SendEmailModal(props: Props) {
+  const trans = useTrans();
   const { visible, setVisible, invoiceIds } = props;
 
   const [t] = useTranslation();

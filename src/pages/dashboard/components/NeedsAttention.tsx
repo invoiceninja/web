@@ -22,7 +22,7 @@ import {
 } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { useColorScheme } from '$app/common/colors';
-import { endpoint, trans } from '$app/common/helpers';
+import { endpoint, useTrans } from '$app/common/helpers';
 import { hasContactWithEmail } from '$app/common/helpers/emails/has-contact-with-email';
 import { request } from '$app/common/helpers/request';
 import { route } from '$app/common/helpers/route';
@@ -65,6 +65,7 @@ interface RowProps {
 }
 
 function NeedsAttentionRow(props: RowProps) {
+  const trans = useTrans();
   const [t] = useTranslation();
   const navigate = useNavigate();
 

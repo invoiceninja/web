@@ -11,7 +11,7 @@
 import { ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useColorScheme } from '$app/common/colors';
-import { date, endpoint, trans } from '$app/common/helpers';
+import { date, endpoint, useTrans } from '$app/common/helpers';
 import { request } from '$app/common/helpers/request';
 import { toast } from '$app/common/helpers/toast/toast';
 import { useCurrentAccount } from '$app/common/hooks/useCurrentAccount';
@@ -29,6 +29,7 @@ export interface PlanProps {
 }
 
 export function Plan({ title, color, trial, price, custom, term }: PlanProps) {
+  const trans = useTrans();
   const scheme = useColorScheme();
   const account = useCurrentAccount();
   const [showCancelModal, setShowCancelModal] = useState(false);

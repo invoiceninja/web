@@ -15,7 +15,7 @@ import reactStringReplace from 'react-string-replace';
 import styled from 'styled-components';
 import { useColorScheme } from '$app/common/colors';
 import { useInvoiceEditorPaths } from '$app/common/hooks/useInvoiceEditor';
-import { date, endpoint, trans } from '$app/common/helpers';
+import { date, endpoint, useTrans } from '$app/common/helpers';
 import { request } from '$app/common/helpers/request';
 import { route } from '$app/common/helpers/route';
 import { toast } from '$app/common/helpers/toast/toast';
@@ -49,6 +49,7 @@ const Box = styled.div`
 `;
 
 export function useGenerateActivityElement() {
+  const trans = useTrans();
   const invoicePaths = useInvoiceEditorPaths();
   const [t] = useTranslation();
 

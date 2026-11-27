@@ -55,6 +55,10 @@ function ClearIndicator(props: ClearIndicatorProps) {
 }
 
 function ValueContainer(props: ValueContainerProps<SelectOption, true>) {
+  // react-select's getValue() has a stable identity but returns the current
+  // selection. React Compiler would cache its first result and freeze the label.
+  'use no memo';
+
   const colors = useColorScheme();
   const values = props.getValue();
   const currentSelectedProps = props.selectProps;

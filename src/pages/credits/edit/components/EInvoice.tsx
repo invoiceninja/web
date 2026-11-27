@@ -18,7 +18,7 @@ import { Navigate, useLocation, useOutletContext } from 'react-router-dom';
 import reactStringReplace from 'react-string-replace';
 import { useColorScheme } from '$app/common/colors';
 import { InvoiceStatus } from '$app/common/enums/invoice-status';
-import { endpoint, trans } from '$app/common/helpers';
+import { endpoint, useTrans } from '$app/common/helpers';
 import { request } from '$app/common/helpers/request';
 import { route } from '$app/common/helpers/route';
 import { toast } from '$app/common/helpers/toast/toast';
@@ -65,6 +65,7 @@ export const VALIDATION_ENTITIES = ['credit', 'client', 'company'];
 const EINVOICE_ACTIVITY_TYPES = [145, 146, 147] as number[];
 
 export default function EInvoice() {
+  const trans = useTrans();
   const [t] = useTranslation();
 
   const queryClient = useQueryClient();

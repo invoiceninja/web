@@ -17,7 +17,7 @@ import { Slider } from '$app/components/cards/Slider';
 import { atom, useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { useCurrentCompanyDateFormats } from '$app/common/hooks/useCurrentCompanyDateFormats';
-import { date, endpoint, trans } from '$app/common/helpers';
+import { date, endpoint, useTrans } from '$app/common/helpers';
 import { ResourceActions } from '$app/components/ResourceActions';
 import { useQuery } from '@tanstack/react-query';
 import { request } from '$app/common/helpers/request';
@@ -73,6 +73,7 @@ const Box = styled.div`
 `;
 
 function useGenerateActivityElement() {
+  const trans = useTrans();
   const [t] = useTranslation();
 
   const hasPermission = useHasPermission();

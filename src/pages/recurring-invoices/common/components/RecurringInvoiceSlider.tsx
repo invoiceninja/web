@@ -17,7 +17,7 @@ import { Slider } from '$app/components/cards/Slider';
 import { atom, useAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { useCurrentCompanyDateFormats } from '$app/common/hooks/useCurrentCompanyDateFormats';
-import { date, endpoint, trans } from '$app/common/helpers';
+import { date, endpoint, useTrans } from '$app/common/helpers';
 import { ResourceActions } from '$app/components/ResourceActions';
 import { toast } from '$app/common/helpers/toast/toast';
 import { useQuery } from '@tanstack/react-query';
@@ -82,6 +82,7 @@ const Box = styled.div`
 `;
 
 export const useGenerateActivityElement = () => {
+  const trans = useTrans();
   const invoicePaths = useInvoiceEditorPaths();
   const [t] = useTranslation();
 

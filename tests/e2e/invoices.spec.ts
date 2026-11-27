@@ -385,7 +385,7 @@ test('deleting invoice with edit_invoice', async ({ page, api }) => {
   }
 });
 
-test('archiving invoice withe edit_invoice', async ({ page, api }) => {
+test('archiving invoice with edit_invoice', async ({ page, api }) => {
 
   await api.setPermissions('invoices@example.com', ['create_invoice', 'edit_invoice', 'view_client', 'create_client']);
 

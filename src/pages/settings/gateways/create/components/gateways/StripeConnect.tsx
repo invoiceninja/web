@@ -10,7 +10,7 @@
 
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { endpoint, isHosted, trans } from '$app/common/helpers';
+import { endpoint, isHosted, useTrans } from '$app/common/helpers';
 import { request } from '$app/common/helpers/request';
 import { route } from '$app/common/helpers/route';
 import { CompanyGateway } from '$app/common/interfaces/company-gateway';
@@ -26,6 +26,7 @@ interface Props {
 }
 
 export function StripeConnect(props: Props) {
+  const trans = useTrans();
   const [t] = useTranslation();
 
   const config = useResolveConfigValue(props.companyGateway);

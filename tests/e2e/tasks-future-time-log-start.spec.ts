@@ -22,78 +22,44 @@ const TASK_STATUSES = 'task_statuses' as EntityType;
 const escapeRegExp = (value: string) =>
   value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-/** Calendar date in UTC (matches Playwright timezoneId and activity_dates windows). */
-const utcCalendarDate = () => {
+/**
+ * Calendar date tomorrow in UTC.
+ *
+ * The API derives a task's `calculated_start_date` (which the Daily view's
+ * `activity_dates` filter uses) from the first time-log start plus the company
+ * UTC offset (the test account is UTC-11). Anchoring the first log at noon UTC
+ * on a fixed day keeps that date identical to the UTC date the browser uses
+ * for any company offset between -12h and +11h, regardless of when the test
+ * runs. Using tomorrow also guarantees the segment is always in the future.
+ */
+const utcTomorrowDate = () => {
   const now = new Date();
 
   return new Date(
-    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate())
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1)
   )
     .toISOString()
     .slice(0, 10);
 };
 
-const dayBoundsUnix = (taskDate: string) => {
+const noonUtcUnix = (taskDate: string) => {
   const [year, month, day] = taskDate.split('-').map(Number);
 
-  return {
-    dayStart: Math.floor(Date.UTC(year, month - 1, day, 0, 0, 0) / 1000),
-    dayEnd: Math.floor(Date.UTC(year, month - 1, day, 23, 59, 59) / 1000),
-  };
+  return Math.floor(Date.UTC(year, month - 1, day, 12, 0, 0) / 1000);
 };
 
-/** Completed segment on `taskDate` so activity_dates / Daily include the task. */
-const pastTimeLogOnDate = (taskDate: string) => {
-  const now = Math.floor(Date.now() / 1000);
-  const { dayStart, dayEnd } = dayBoundsUnix(taskDate);
-
-  let stop = Math.min(now - 120, dayEnd);
-  let start = stop - 1800;
-
-  if (start < dayStart) {
-    start = dayStart;
-    stop = Math.min(start + 1800, now - 120);
-  }
-
-  if (start >= stop || stop >= now) {
-    throw new Error(
-      `Cannot build past time log on ${taskDate} (now=${now}, dayStart=${dayStart})`
-    );
-  }
-
-  return { start, stop };
-};
-
-/** Time-log segment entirely in the future but still on `taskDate` (UTC). */
-const futureTimeLogOnDate = (taskDate: string) => {
-  const now = Math.floor(Date.now() / 1000);
-  const { dayEnd: endOfDayUnix } = dayBoundsUnix(taskDate);
-
-  let start = now + 3600;
-  let stop = start + 3600;
-
-  if (stop > endOfDayUnix) {
-    start = Math.max(now + 300, endOfDayUnix - 7200);
-    stop = Math.min(start + 3600, endOfDayUnix);
-  }
-
-  if (start <= now || stop <= now) {
-    throw new Error(
-      `Cannot build future time log on ${taskDate} (now=${now}, end=${endOfDayUnix})`
-    );
-  }
-
-  return { start, stop };
-};
-
-/** Past + future segments: Daily sees activity; Start stays hidden (future log). */
+/**
+ * Two future segments on `taskDate`. Don't add a past segment: the API sorts
+ * the log and derives the task date from the earliest entry, which would move
+ * the task off `taskDate`. Any future log is enough to hide Start.
+ */
 const timeLogWithFutureStartHidden = (taskDate: string) => {
-  const past = pastTimeLogOnDate(taskDate);
-  const future = futureTimeLogOnDate(taskDate);
+  const firstStart = noonUtcUnix(taskDate);
+  const secondStart = firstStart + 7200;
 
   return JSON.stringify([
-    [past.start, past.stop, '', true],
-    [future.start, future.stop, '', true],
+    [firstStart, firstStart + 1800, '', true],
+    [secondStart, secondStart + 1800, '', true],
   ]);
 };
 
@@ -107,7 +73,7 @@ test('hides Start controls for tasks with future time logs', async ({
   const suffix = Date.now().toString(36).slice(-6);
   const status = await createTaskStatus(api, `future-start-${suffix}`, 1);
   const description = `future-start-${suffix}`;
-  const taskDate = utcCalendarDate();
+  const taskDate = utcTomorrowDate();
   const task = await createTaskFromBlank(api, {
     client_id: client.id,
     status_id: status.id,

@@ -11,7 +11,7 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import frequencies from '$app/common/constants/frequency';
-import { trans } from '$app/common/helpers';
+import { useTrans } from '$app/common/helpers';
 import { Subscription } from '$app/common/interfaces/subscription';
 import { Element } from '$app/components/cards';
 import { InputField, SelectField } from '$app/components/forms';
@@ -21,6 +21,7 @@ import { Inline } from '$app/components/Inline';
 import { SubscriptionProps } from './Overview';
 
 export function Settings(props: SubscriptionProps) {
+  const trans = useTrans();
   const [t] = useTranslation();
 
   const { subscription, handleChange, errors } = props;

@@ -12,7 +12,7 @@ import { useState } from 'react';
 import { Check } from 'react-feather';
 import { useTranslation } from 'react-i18next';
 import { useColorScheme } from '$app/common/colors';
-import { date, trans } from '$app/common/helpers';
+import { date, useTrans } from '$app/common/helpers';
 import { useAccentColor } from '$app/common/hooks/useAccentColor';
 import { useCurrentAccount } from '$app/common/hooks/useCurrentAccount';
 import { useCurrentCompanyDateFormats } from '$app/common/hooks/useCurrentCompanyDateFormats';
@@ -24,6 +24,7 @@ import { useEnterpriseUtils } from '../../common/hooks/useEnterpriseUtils';
 import { StartTrial } from './StartTrial';
 
 export function HostedPlan() {
+  const trans = useTrans();
   const accentColor = useAccentColor();
   const colors = useColorScheme();
   const scheme = useColorScheme();
