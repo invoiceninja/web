@@ -106,7 +106,7 @@ export function Table() {
     toast.dismiss();
 
     const blob = new Blob([response.data], {
-      type: response.headers['content-type'],
+      type: String(response.headers['content-type'] ?? ''),
     });
     const url = URL.createObjectURL(blob);
 
@@ -170,7 +170,7 @@ export function Table() {
           });
 
           const blob = new Blob([response.data], {
-            type: response.headers['content-type'],
+            type: String(response.headers['content-type'] ?? ''),
           });
           const url = URL.createObjectURL(blob);
 

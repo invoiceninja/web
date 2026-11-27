@@ -94,7 +94,7 @@ export function DocumentPreview(props: Props) {
           })
           .then((response) => {
             const blob = new Blob([response.data], {
-              type: response.headers['content-type'],
+              type: String(response.headers['content-type'] ?? ''),
             });
 
             if (isDocumentPicture()) {

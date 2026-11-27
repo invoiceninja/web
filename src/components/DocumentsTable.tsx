@@ -95,7 +95,7 @@ export function DocumentsTable(props: Props) {
       })
       .then((response) => {
         const blob = new Blob([response.data], {
-          type: response.headers['content-type'],
+          type: String(response.headers['content-type'] ?? ''),
         });
         const url = URL.createObjectURL(blob);
 
@@ -164,7 +164,7 @@ export function DocumentsTable(props: Props) {
           });
 
           const blob = new Blob([response.data], {
-            type: response.headers['content-type'],
+            type: String(response.headers['content-type'] ?? ''),
           });
           const url = URL.createObjectURL(blob);
 
