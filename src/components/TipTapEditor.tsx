@@ -1081,11 +1081,6 @@ export function TipTapEditor({
   placeholder = 'Start typing...',
   minHeight = '12.5rem',
 }: TipTapEditorProps) {
-  // The toolbar reads live editor state in render (editor.isActive(), getHTML(),
-  // getAttributes()). `editor` keeps a stable identity, so React Compiler would
-  // cache the first result and freeze every toolbar highlight.
-  'use no memo';
-
   const [t] = useTranslation();
 
   const colors = useColorScheme();
